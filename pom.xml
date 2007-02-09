@@ -21,6 +21,14 @@
       </roles>
       <timezone>+1</timezone>
     </developer>
+    <developer>
+      <id>jdillon</id>
+      <name>Jason Dillon</name>
+      <email>jason.dillon@gmail.com</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
   </developers>
   <licenses>
     <license>
