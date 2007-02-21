@@ -1,7 +1,7 @@
 package org.codehaus.mojo.selenium;
 
 /*
- * Copyright 2006 The Codehaus.
+ * Copyright 2006-2007 The Codehaus.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@ package org.codehaus.mojo.selenium;
  * limitations under the License.
  */
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -27,8 +29,6 @@ import org.apache.tools.ant.taskdefs.Java;
 import org.apache.tools.ant.taskdefs.Property;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Path;
-import org.codehaus.plexus.util.FileUtils;
-import org.codehaus.plexus.util.IOUtil;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * Start the Selenium server.
  *
- * @version $Rev: 463568 $ $Date$
+ * @version $Id$
  * @goal start-server
  */
 public class StartServerMojo
@@ -64,16 +64,15 @@ public class StartServerMojo
 
     /**
      * Enable the server's debug mode..
-     * Set this to 'true' to run the server in background.
      *
-     * @parameter expression="${debug}"
+     * @parameter expression="${debug}" default-value="false"
      */
     private boolean debug = false;
 
     /**
      * The file or resource to use for default user-extentions.js.
      *
-     * @parameter default-value="org/apache/geronimo/mavenplugins/selenium/default-user-extentions.js"
+     * @parameter default-value="org/codehaus/mojo/selenium/default-user-extentions.js"
      */
     private String defaultUserExtensions = null;
 
@@ -111,11 +110,10 @@ public class StartServerMojo
 
     /**
      * Enable logging mode.
-     * Set this to 'true' to run in debug mode. 
      *
-     * @parameter expression="${logOutput}"
+     * @parameter expression="${logOutput}" default-value="false"
      */
-    protected boolean logOutput;
+    protected boolean logOutput = false;
 
     /**
      * The file that Selenium server logs will be written to.
@@ -127,11 +125,15 @@ public class StartServerMojo
 
     /**
      * Flag to control if we background the server or block Maven execution.
-     * Set this to 'true' to run the server in background.
      *
-     * @parameter expression="${background}
+     * @parameter default-value="false"
+     * @required
      */
-    private boolean background;
+    private boolean background = false;
+
+    //
+    // MojoSupport Hooks
+    //
 
     /**
      * The maven project.
@@ -148,6 +150,10 @@ public class StartServerMojo
     {
         return project;
     }
+
+    //
+    // Mojo
+    //
 
     private File getPluginArchive()
     {
@@ -202,14 +208,13 @@ public class StartServerMojo
             java.setOutput( logFile );
         }
 
-        java.setJar( getPluginArtifact( "org.openqa.selenium.server:selenium-server" ).getFile() );
-        /*java.setClassname( "org.openqa.selenium.server.SeleniumServer" );
+        java.setClassname( "org.openqa.selenium.server.SeleniumServer" );
 
         Path classpath = java.createClasspath();
         classpath.createPathElement().setLocation( getPluginArchive() );
-        //classpath.createPathElement().setLocation( getPluginArtifact( "log4j:log4j" ).getFile() );
+        classpath.createPathElement().setLocation( getPluginArtifact( "log4j:log4j" ).getFile() );
         classpath.createPathElement().setLocation(
-            getPluginArtifact( "org.openqa.selenium.server:selenium-server" ).getFile() );*/
+            getPluginArtifact( "org.openqa.selenium.server:selenium-server" ).getFile() );
 
         Environment.Variable var;
 
@@ -220,13 +225,13 @@ public class StartServerMojo
 
         var = new Environment.Variable();
         var.setKey( "selenium.loglevel" );
-        var.setValue( debug ? "DEBUG" : "INFO" );
+        var.setValue( debug == true ? "DEBUG" : "INFO" );
         java.addSysproperty( var );
 
-        /*var = new Environment.Variable();
+        var = new Environment.Variable();
         var.setKey( "log4j.configuration" );
         var.setValue( "org/apache/geronimo/mavenplugins/selenium/log4j.properties" );
-        java.addSysproperty( var );*/
+        java.addSysproperty( var );
 
         // Server arguments
 
@@ -246,14 +251,14 @@ public class StartServerMojo
             java.createArg().setValue( String.valueOf( timeout ) );
         }
 
-        /*File userExtentionsFile = getUserExtentionsFile();
+        File userExtentionsFile = getUserExtentionsFile();
         if ( userExtentionsFile != null )
         {
             getLog().info( "User extensions: " + userExtentionsFile );
 
             java.createArg().setValue( "-userExtensions" );
             java.createArg().setFile( userExtentionsFile );
-        }*/
+        }
 
         // Holds any exception that was thrown during startup
         final ObjectHolder errorHolder = new ObjectHolder();
@@ -265,7 +270,6 @@ public class StartServerMojo
             {
                 try
                 {
-                    getLog().info( java.getCommandLine().toString() );
                     java.execute();
                 }
                 catch ( Exception e )
@@ -297,12 +301,12 @@ public class StartServerMojo
 
             try
             {
-                url.openConnection().connect();
+                Object input = url.openConnection().getContent();
                 started = true;
             }
             catch ( Exception e )
             {
-                //e.printStackTrace( );
+                // ignore
             }
 
             Thread.sleep( 1000 );
@@ -359,9 +363,7 @@ public class StartServerMojo
     }
 
     /**
-     * Return the user-extentions.js file to use, or null if it should not be installed.
-     *
-     * @return the user-extentions.js file to use, or null if it should not be installed
+     * Retutn the user-extentions.js file to use, or null if it should not be installed.
      */
     private File getUserExtentionsFile()
         throws Exception
@@ -391,7 +393,7 @@ public class StartServerMojo
             writer.println( "// Default user extentions; from: " + url );
             writer.println( "//" );
 
-            IOUtil.copy( url.openStream(), writer );
+            IOUtils.copy( url.openStream(), writer );
         }
 
         if ( userExtensions != null )
@@ -403,7 +405,7 @@ public class StartServerMojo
             writer.println( "// User extentions; from: " + url );
             writer.println( "//" );
 
-            IOUtil.copy( url.openStream(), writer );
+            IOUtils.copy( url.openStream(), writer );
         }
 
         writer.flush();
