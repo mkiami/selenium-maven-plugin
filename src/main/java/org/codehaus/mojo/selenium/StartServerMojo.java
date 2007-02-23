@@ -228,7 +228,7 @@ public class StartServerMojo
 
         var = new Environment.Variable();
         var.setKey( "log4j.configuration" );
-        var.setValue( "org/apache/geronimo/mavenplugins/selenium/log4j.properties" );
+        var.setValue( "org/codehaus/mojo/selenium/log4j.properties" );
         java.addSysproperty( var );
 
         // Server arguments
