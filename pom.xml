@@ -2,7 +2,7 @@
   <parent>
     <artifactId>mojo</artifactId>
     <groupId>org.codehaus.mojo</groupId>
-    <version>14-SNAPSHOT</version>
+    <version>13</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>selenium-maven-plugin</artifactId>
