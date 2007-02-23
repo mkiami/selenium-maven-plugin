@@ -13,9 +13,10 @@
       <menu name="Mojo">
          <item name="mojo" href="http://mojo.codehaus.org"/>
       </menu>
-      <menu name="Selenium plugin Quickstart">
-         <item name="Standard usage" href="./usage.html"/>
-         <item name="Selenium home" href="http://www.openqa.org/selenium/"/>
+      <menu name="Selenium Plugin">
+         <item name="Standard Usage" href="usage.html"/>
+         <item name="Configuration" href="plugin-info.html"/>
+         <item name="Selenium Home" href="http://www.openqa.org/selenium/"/>
       </menu>
       ${reports}
    </body>
