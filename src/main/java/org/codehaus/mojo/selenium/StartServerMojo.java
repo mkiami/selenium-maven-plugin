@@ -46,6 +46,8 @@ import java.util.Map;
  * Start the Selenium server.
  *
  * @goal start-server
+ *
+ * @version $Id$
  */
 public class StartServerMojo
     extends AbstractMojo
@@ -133,10 +135,6 @@ public class StartServerMojo
      */
     private boolean background = false;
 
-    //
-    // MojoSupport Hooks
-    //
-
     /**
      * The maven project.
      *
@@ -145,13 +143,11 @@ public class StartServerMojo
      * @readonly
      */
     private MavenProject project = null;
-
+    
+    /**
+     * Ant project used to launch processes.
+     */
     private Project ant;
-
-    protected MavenProject getProject()
-    {
-        return project;
-    }
 
     //
     // Mojo
@@ -188,7 +184,7 @@ public class StartServerMojo
         }
     }
 
-    protected void doExecute()
+    private void doExecute()
         throws Exception
     {
         getLog().info( "Starting Selenium server..." );
@@ -419,7 +415,7 @@ public class StartServerMojo
     private void initializeAnt()
     {
         ant = new Project();
-        ant.setBaseDir( getProject().getBasedir() );
+        ant.setBaseDir( project.getBasedir() );
 
         initAntLogger( ant );
 
@@ -427,7 +423,6 @@ public class StartServerMojo
 
         // Inherit properties from Maven
         inheritProperties();
-
     }
 
     private Task createTask( String name )
@@ -461,7 +456,7 @@ public class StartServerMojo
     private void inheritProperties()
     {
         // Propagate properties
-        Map props = getProject().getProperties();
+        Map props = project.getProperties();
         Iterator iter = props.keySet().iterator();
         while ( iter.hasNext() )
         {
@@ -471,7 +466,7 @@ public class StartServerMojo
         }
 
         // Hardcode a few
-        setProperty( "pom.basedir", getProject().getBasedir() );
+        setProperty( "pom.basedir", project.getBasedir() );
     }
 
     private void setProperty( final String name, Object value )
