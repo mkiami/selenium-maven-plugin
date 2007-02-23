@@ -1,5 +1,5 @@
  ------
- Basic Usage :: Mojo Selenium Plugin for Maven 2
+ Usage :: Selenium Plugin for Maven 2
  ------
  ------
  $Id$
@@ -23,7 +23,7 @@
 ~~ under the License.
 ~~ 
 
-Basic Usage
+Usage
 
 * Start Selenium Server (Integrated)
 
