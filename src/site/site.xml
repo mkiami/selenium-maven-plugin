@@ -39,6 +39,9 @@
          <item name="Usage" href="usage.html"/>
          <item name="Goals" href="plugin-info.html"/>
       </menu>
+      <menu name="Examples">
+         <item name="With Surefire" href="examples/using-with-surefire.html"/>
+      </menu>
       ${reports}
    </body>
 </project>

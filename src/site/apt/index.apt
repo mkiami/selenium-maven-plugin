@@ -25,14 +25,27 @@
 
 Selenium Maven Plugin
 
- Use this plugin to start a {{{http://www.openqa.org/selenium}Selenium}} server
- to support web-application testing.
+ Use this plugin to start a {{{http://www.openqa.org/selenium}Selenium}}
+ {{{http://www.openqa.org/selenium-rc/}Remote Control}} server to support
+ automated web-application testing.
+ 
+ This plugin is intended to support usage of the
+ {{{http://www.openqa.org/selenium-rc/java.html}Selenium Java Client Driver}}
+ when running <regular Surefire tests>.  Use {{{http://www.openqa.org/selenium-ide}Selenium IDE}}
+ to help generate the initial Java code for the tests, and then augment as needed.
 
 * Goals Overview
 
  * {{{start-server-mojo.html}selenium:start-server}}: Start the Selenium server.
+ 
+ []
 
 * Usage
 
  Instructions on how to use the Selenium Maven Plugin can be found {{{usage.html}here}}.
 
+* Examples
+
+ * {{{examples/using-with-surefire.html}An example with Surefire.}}
+ 
+ []
