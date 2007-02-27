@@ -28,7 +28,7 @@
   <artifactId>selenium-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   <name>Maven Selenium Plugin</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0-beta-1</version>
   <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
   <inceptionYear>2006</inceptionYear>
   <description>
@@ -108,4 +108,10 @@
       <version>1.2</version>
     </dependency>
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.0-beta-1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.0-beta-1</developerConnection>
+    <url>https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.0-beta-1</url>
+  </scm>
 </project>
