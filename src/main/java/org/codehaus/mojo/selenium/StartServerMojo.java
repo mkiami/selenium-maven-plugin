@@ -19,28 +19,30 @@
 
 package org.codehaus.mojo.selenium;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.util.Map;
+
 import org.apache.maven.project.MavenProject;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.Task;
+import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.MojoExecutionException;
+
+import org.apache.commons.io.IOUtils;
+
 import org.apache.tools.ant.taskdefs.Java;
-import org.apache.tools.ant.taskdefs.Property;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Path;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.Map;
+import org.codehaus.plexus.util.FileUtils;
+
+import org.codehaus.mojo.pluginsupport.util.ObjectHolder;
+import org.codehaus.mojo.pluginsupport.ant.AntMojoSupport;
 
 /**
  * Start the Selenium server.
@@ -50,7 +52,7 @@ import java.util.Map;
  * @version $Id$
  */
 public class StartServerMojo
-    extends AbstractMojo
+    extends AntMojoSupport
 {
     /**
      * The port number the server will use.
@@ -135,6 +137,10 @@ public class StartServerMojo
      */
     private boolean background = false;
 
+    //
+    // MojoSupport Hooks
+    //
+
     /**
      * The maven project.
      *
@@ -143,11 +149,10 @@ public class StartServerMojo
      * @readonly
      */
     private MavenProject project = null;
-    
-    /**
-     * Ant project used to launch processes.
-     */
-    private Project ant;
+
+    protected MavenProject getProject() {
+        return project;
+    }
 
     //
     // Mojo
@@ -171,23 +176,10 @@ public class StartServerMojo
         return artifact;
     }
 
-    public void execute()
-        throws MojoExecutionException
-    {
-        try
-        {
-            doExecute();
-        }
-        catch ( Exception e )
-        {
-            throw new MojoExecutionException( "An error is occurred with the selenium server.", e );
-        }
-    }
-
-    private void doExecute()
+    protected void doExecute()
         throws Exception
     {
-        getLog().info( "Starting Selenium server..." );
+        log.info( "Starting Selenium server..." );
 
         final Java java = (Java) createTask( "java" );
 
@@ -201,7 +193,7 @@ public class StartServerMojo
         {
             FileUtils.forceMkdir( logFile.getParentFile() );
 
-            getLog().info( "Redirecting output to: " + logFile );
+            log.info( "Redirecting output to: " + logFile );
 
             java.setOutput( logFile );
         }
@@ -243,7 +235,7 @@ public class StartServerMojo
 
         if ( timeout > 0 )
         {
-            getLog().info( "Timeout after: " + timeout + " seconds" );
+            log.info( "Timeout after: " + timeout + " seconds" );
 
             java.createArg().setValue( "-timeout" );
             java.createArg().setValue( String.valueOf( timeout ) );
@@ -252,7 +244,7 @@ public class StartServerMojo
         File userExtentionsFile = getUserExtentionsFile();
         if ( userExtentionsFile != null )
         {
-            getLog().info( "User extensions: " + userExtentionsFile );
+            log.info( "User extensions: " + userExtentionsFile );
 
             java.createArg().setValue( "-userExtensions" );
             java.createArg().setFile( userExtentionsFile );
@@ -283,7 +275,7 @@ public class StartServerMojo
         };
         t.start();
 
-        getLog().debug( "Waiting for Selenium server..." );
+        log.debug( "Waiting for Selenium server..." );
 
         // Verify server started
         URL url = new URL( "http://localhost:" + port + "/selenium-server" );
@@ -295,7 +287,7 @@ public class StartServerMojo
                 throw new MojoExecutionException( "Failed to start Selenium server", (Throwable) errorHolder.get() );
             }
 
-            getLog().debug( "Trying connection to: " + url );
+            log.debug( "Trying connection to: " + url );
 
             try
             {
@@ -310,11 +302,11 @@ public class StartServerMojo
             Thread.sleep( 1000 );
         }
 
-        getLog().info( "Selenium server started" );
+        log.info( "Selenium server started" );
 
         if ( !background )
         {
-            getLog().info( "Waiting for Selenium to shutdown..." );
+            log.info( "Waiting for Selenium to shutdown..." );
 
             t.join();
         }
@@ -355,7 +347,7 @@ public class StartServerMojo
             throw new MojoFailureException( "Could not resolve resource: " + name );
         }
 
-        getLog().debug( "Resolved resource '" + name + "' as: " + url );
+        log.debug( "Resolved resource '" + name + "' as: " + url );
 
         return url;
     }
@@ -375,7 +367,7 @@ public class StartServerMojo
         File file = new File( workingDirectory, "user-extensions.js" );
         if ( file.exists() )
         {
-            getLog().debug( "Reusing previously generated file: " + file );
+            log.debug( "Reusing previously generated file: " + file );
 
             return file;
         }
@@ -385,7 +377,7 @@ public class StartServerMojo
         if ( defaultUserExtensionsEnabled )
         {
             URL url = resolveResource( defaultUserExtensions );
-            getLog().debug( "Using defaults: " + url );
+            log.debug( "Using defaults: " + url );
 
             writer.println( "//" );
             writer.println( "// Default user extentions; from: " + url );
@@ -397,7 +389,7 @@ public class StartServerMojo
         if ( userExtensions != null )
         {
             URL url = resolveResource( userExtensions );
-            getLog().debug( "Using user extentions: " + url );
+            log.debug( "Using user extentions: " + url );
 
             writer.println( "//" );
             writer.println( "// User extentions; from: " + url );
@@ -410,77 +402,5 @@ public class StartServerMojo
         writer.close();
 
         return file;
-    }
-
-    private void initializeAnt()
-    {
-        ant = new Project();
-        ant.setBaseDir( project.getBasedir() );
-
-        initAntLogger( ant );
-
-        ant.init();
-
-        // Inherit properties from Maven
-        inheritProperties();
-    }
-
-    private Task createTask( String name )
-    {
-        if ( ant == null )
-        {
-            initializeAnt();
-        }
-        return ant.createTask( name );
-    }
-
-    private void initAntLogger( final Project ant )
-    {
-        MavenAntLoggerAdapter antLogger = new MavenAntLoggerAdapter( getLog() );
-        antLogger.setEmacsMode( true );
-        antLogger.setOutputPrintStream( System.out );
-        antLogger.setErrorPrintStream( System.err );
-
-        if ( getLog().isDebugEnabled() )
-        {
-            antLogger.setMessageOutputLevel( Project.MSG_VERBOSE );
-        }
-        else
-        {
-            antLogger.setMessageOutputLevel( Project.MSG_INFO );
-        }
-
-        ant.addBuildListener( antLogger );
-    }
-
-    private void inheritProperties()
-    {
-        // Propagate properties
-        Map props = project.getProperties();
-        Iterator iter = props.keySet().iterator();
-        while ( iter.hasNext() )
-        {
-            String name = (String) iter.next();
-            String value = String.valueOf( props.get( name ) );
-            setProperty( name, value );
-        }
-
-        // Hardcode a few
-        setProperty( "pom.basedir", project.getBasedir() );
-    }
-
-    private void setProperty( final String name, Object value )
-    {
-        String valueAsString = String.valueOf( value );
-
-        if ( getLog().isDebugEnabled() )
-        {
-            getLog().debug( "Setting property: " + name + "=" + valueAsString );
-        }
-
-        Property prop = (Property) createTask( "property" );
-        prop.setName( name );
-        prop.setValue( valueAsString );
-        prop.execute();
     }
 }
