@@ -44,22 +44,15 @@ package org.codehaus.mojo.selenium;
 import junit.framework.TestCase;
 
 import com.thoughtworks.selenium.DefaultSelenium;
-import org.openqa.selenium.server.SeleniumServer;
 
 public class SeleniumExampleTest
     extends TestCase
 {
     protected DefaultSelenium createSeleniumClient(String url) throws Exception {
-        if (url == null) {
-            url = "http://localhost:" + SeleniumServer.DEFAULT_PORT;
-        }
-        DefaultSelenium selenium = new DefaultSelenium(
-            "localhost", SeleniumServer.DEFAULT_PORT, "*firefox", url);
-        
-        return selenium;
+        return new DefaultSelenium("localhost", 4444, "*firefox", url);
     }
     
-    protected void testSomethingSimple() throws Exception {
+    public void testSomethingSimple() throws Exception {
         DefaultSelenium selenium = createSeleniumClient("http://localhost:8080/");
         selenium.start();
         
