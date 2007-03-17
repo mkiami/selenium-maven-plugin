@@ -33,9 +33,7 @@
             <url>http://maven.openqa.org</url>
             <layout>default</layout>
             <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
+                <enabled>false</enabled>
             </snapshots>
             <releases>
                 <enabled>true</enabled>
