@@ -89,7 +89,6 @@
                 
                 <executions>
                     <execution>
-                        <id>start-selenium</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start-server</goal>
