@@ -303,7 +303,13 @@ public class StartServerMojo
         }
 
         log.info( "Selenium server started" );
-
+        
+        //
+        // TODO: Use the Java client API to try and validate that it can actually
+        //       fire up a browser.  As just launching the server won't really
+        //       provide feedback if firefox (or whatever browser) isn't on the path/runnable.
+        //
+        
         if ( !background )
         {
             log.info( "Waiting for Selenium to shutdown..." );
