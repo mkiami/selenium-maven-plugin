@@ -137,6 +137,15 @@ public class StartServerMojo
      */
     private boolean background = false;
 
+    /**
+     * Flag to control if we start Selenium RC in multiWindow mode or not. The multiWindow mode
+     * is useful for applications using frames/iframes which otherwise cannot be tested as the
+     * same window is used for displaying both the Selenium tests and the AUT.
+     *
+     * @parameter default-value="false"
+     */
+    private boolean multiWindow = false;
+
     //
     // MojoSupport Hooks
     //
@@ -239,6 +248,11 @@ public class StartServerMojo
 
             java.createArg().setValue( "-timeout" );
             java.createArg().setValue( String.valueOf( timeout ) );
+        }
+
+        if ( multiWindow )
+        {
+            java.createArg().setValue( "-multiwindow" );
         }
 
         File userExtentionsFile = getUserExtentionsFile();
