@@ -23,8 +23,6 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
 
 import org.apache.maven.project.MavenProject
 
-import org.apache.commons.io.IOUtils
-
 /**
  * Start the Selenium server.
  *
@@ -308,8 +306,7 @@ class StartServerMojo
             writer.println('//')
             writer.println("// Default user extentions from: $url")
             writer.println('//')
-
-            IOUtils.copy(url.openStream(), writer)
+            writer << url.openStream()
         }
 
         if (userExtensions) {
@@ -319,8 +316,7 @@ class StartServerMojo
             writer.println('//')
             writer.println("// User extentions from: $url")
             writer.println('//')
-
-            IOUtils.copy(url.openStream(), writer)
+            writer << url.openStream()
         }
 
         writer.flush()
