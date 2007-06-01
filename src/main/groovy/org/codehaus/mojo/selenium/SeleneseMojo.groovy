@@ -118,7 +118,7 @@ class SeleneseMojo
         if (!results) {
             String options = (multiWindow ? 'multiWindow-' : '') + (slowResources ? 'slowResources-' : '')
             String name = 'results-' + extractUsableBrowserName() + '-' + options + suite.name
-            results = new File(project.basedir, name)
+            results = new File(project.build.directory, name)
             log.info("Results will go to: ${results.absolutePath}")
         }
         
