@@ -42,7 +42,7 @@
                         <configuration>
                             <suite>${pom.basedir}/src/test/selenium/suite.html</suite>
                             <browser>*firefox</browser>
-                            <startURL>http://localhost</startURL>
+                            <startURL>http://www.google.com</startURL>
                         </configuration>
                     </execution>
                 </executions>

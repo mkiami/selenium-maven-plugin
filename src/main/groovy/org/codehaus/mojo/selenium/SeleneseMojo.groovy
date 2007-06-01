@@ -122,6 +122,8 @@ class SeleneseMojo
             log.info("Results will go to: ${results.absolutePath}")
         }
         
+        ant.mkdir(dir: results.parentFile)
+        
         def server = new SeleniumServer(port, slowResources, multiWindow)
         server.start()
         
