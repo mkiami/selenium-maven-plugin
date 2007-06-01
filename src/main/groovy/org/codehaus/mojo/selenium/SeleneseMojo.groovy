@@ -141,7 +141,7 @@ class SeleneseMojo
     private String extractUsableBrowserName() {
         def m = browser =~ /\*(\w+)/
         if (m.find()) {
-            return m.group(1);
+            return m.group(1)
         }
         fail("Could not parse browser string: $browser")
     }
