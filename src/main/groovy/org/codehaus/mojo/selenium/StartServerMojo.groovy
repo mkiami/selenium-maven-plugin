@@ -1,4 +1,4 @@
-/**
+/*
  *  Licensed to the Apache Software Foundation (ASF) under one
  *  or more contributor license agreements.  See the NOTICE file
  *  distributed with this work for additional information
@@ -116,13 +116,18 @@ class StartServerMojo
      */
     boolean multiWindow
 
+    /**
+     * The location of the file to read the display properties.
+     *
+     * @parameter default-value="${project.build.directory}/selenium/display.properties"
+     */
+    File displayPropertiesFile
+    
     //
     // Components
     //
     
     /**
-     * Map of of plugin artifacts.
-     *
      * @parameter expression="${plugin.artifactMap}"
      * @required
      * @readonly
@@ -130,8 +135,6 @@ class StartServerMojo
     Map pluginArtifactMap
 
     /**
-     * The maven project.
-     *
      * @parameter expression="${project}"
      * @required
      * @readonly
@@ -174,6 +177,17 @@ class StartServerMojo
                         pathelement(location: getClass().protectionDomain.codeSource.location.file)
                         pathelement(location: pluginArifact('log4j:log4j'))
                         pathelement(location: pluginArifact('org.openqa.selenium.server:selenium-server'))
+                    }
+                    
+                    // Set display properties if the properties file exists
+                    if (displayPropertiesFile && displayPropertiesFile.exists()) {
+                        log.info("Including display properties from: $displayPropertiesFile")
+                        
+                        def props = new Properties()
+                        props.load(displayPropertiesFile.newInputStream())
+                        props.each { key, value ->
+                            env(key: key, value: value)
+                        }
                     }
                     
                     if (logOutput) {
