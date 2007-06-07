@@ -41,6 +41,13 @@ class XvfbMojo
      */
     String executable
     
+    /**
+     * The X11 display to use.  Default value is <tt>:1</tt>.
+     *
+     * @parameter
+     */
+    String display
+    
     //
     // TODO: See if we need default options for Firefox [ '-screen', '0', '1024x768x24' ]
     //
@@ -89,13 +96,22 @@ class XvfbMojo
     void execute() {
         log.info('Starting Xvfb...')
         
-        //
-        // Normally, the first X11 display is on port 6000, the next on port 6001,
-        // which get abbreviated as :0, :1 and so on.
-        //
-        
         // Figure out what the display number is, and generate the properties file
-        def display = ':1'
+        if (!display) {
+            //
+            // TODO: Try and detect which screen to use if not explicity configured,
+            //
+            
+            //
+            // Normally, the first X11 display is on port 6000, the next on port 6001,
+            // which get abbreviated as :0, :1 and so on.
+            //
+            
+            //
+            // HACK: For now just default to :1
+            //
+            display = ':1'
+        }
         log.info("Using display: $display")
         
         ant.mkdir(dir: displayPropertiesFile.parentFile)
