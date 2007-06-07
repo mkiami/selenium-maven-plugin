@@ -38,6 +38,10 @@ Selenium Maven Plugin
 
  * {{{start-server-mojo.html}selenium:start-server}}: Start the Selenium server.
  
+ * {{{selenese-mojo.html}selenium:selenese}}: Run a suite of HTML Selenese tests.
+ 
+ * {{{xvfb-mojo.html}selenium:xvfb}}: Starts an Xvfb instance suitable for handling X11 displays for headless systems.
+ 
  []
 
 * Usage
