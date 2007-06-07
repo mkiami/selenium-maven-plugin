@@ -104,6 +104,11 @@ class XvfbMojo
     void execute() {
         log.info('Starting Xvfb...')
         
+        //
+        // Normally, the first X11 display is on port 6000, the next on port 6001,
+        // which get abbreviated as :0, :1 and so on.
+        //
+        
         // Figure out what the display number is, and generate the properties file
         def display = ':1'
         log.info("Using display: $display")
