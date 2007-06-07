@@ -106,6 +106,8 @@ class XvfbMojo
         
         // Figure out what the display number is, and generate the properties file
         def display = ':1'
+        log.info("Using display: $display")
+        
         ant.mkdir(dir: displayPropertiesFile.parentFile)
         def props = new Properties()
         props['DISPLAY'] = "$display"
