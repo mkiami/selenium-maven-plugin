@@ -48,4 +48,6 @@ Selenium Maven Plugin
 
  * {{{examples/using-with-surefire.html}An example with Surefire.}}
  
+ * {{{examples/headless-with-xvfb.html}Headless X11 with Xvfb.}}
+ 
  []

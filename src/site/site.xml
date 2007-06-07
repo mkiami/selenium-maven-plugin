@@ -41,6 +41,7 @@
       </menu>
       <menu name="Examples">
          <item name="With Surefire" href="examples/using-with-surefire.html"/>
+         <item name="Headless X11 with Xvfb" href="examples/headless-with-xvfb.html"/>
       </menu>
       ${reports}
    </body>
