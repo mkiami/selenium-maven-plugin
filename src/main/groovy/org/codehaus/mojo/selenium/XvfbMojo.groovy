@@ -114,6 +114,7 @@ class XvfbMojo
         }
         log.info("Using display: $display")
         
+        // Write out the display properties so that the start-server goal can pick it up
         ant.mkdir(dir: displayPropertiesFile.parentFile)
         def props = new Properties()
         props['DISPLAY'] = "$display"
@@ -156,6 +157,9 @@ class XvfbMojo
         
         //
         // TODO: Verify that Xvfb is up and running... how?
+        //
+        //       Could potentialy use the escher X11 library, though its GPL (making this plugin GPL)
+        //       and doesn't appear to be in any Maven repo as of yet (that I could find).
         //
         
         log.info('Xvfb started')
