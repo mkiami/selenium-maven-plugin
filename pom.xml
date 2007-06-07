@@ -201,6 +201,20 @@
                                     <goal>install</goal>
                                     <goal>test</goal>
                                 </goals>
+                                <configuration>
+                                    <projects>
+                                        <fileset>
+                                            <directory>src/it</directory>
+                                            <includes>
+                                                <include>*/pom.xml</include>
+                                            </includes>
+                                            <excludes>
+                                                <!-- Disable the selenese tests for now, they don't really work -->
+                                                <exclude>selenese*/pom.xml</exclude>
+                                            </excludes>
+                                        </fileset>
+                                    </projects>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
