@@ -21,8 +21,6 @@ package org.codehaus.mojo.selenium
 
 import org.codehaus.mojo.groovy.GroovyMojoSupport
 
-import org.apache.maven.project.MavenProject
-
 /**
  * Start the Selenium server.
  *
@@ -133,13 +131,6 @@ class StartServerMojo
      * @readonly
      */
     Map pluginArtifactMap
-
-    /**
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    MavenProject project
 
     //
     // Mojo

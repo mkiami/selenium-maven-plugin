@@ -21,8 +21,6 @@ package org.codehaus.mojo.selenium
 
 import org.codehaus.mojo.groovy.GroovyMojoSupport
 
-import org.apache.maven.project.MavenProject
-
 /**
  * Starts an Xvfb instance suitable for handling X11 displays for headless systems.
  * Use this in combonation with the <tt>start-server</tt> goal to allow browsers
@@ -44,7 +42,7 @@ class XvfbMojo
     String executable
     
     //
-    // TODO: See if we need default options [ '-screen', '0', '1024x768x24' ]
+    // TODO: See if we need default options for Firefox [ '-screen', '0', '1024x768x24' ]
     //
     
     /**
@@ -66,36 +64,23 @@ class XvfbMojo
     /**
      * Enable logging mode.
      *
-     * @parameter expression="${logOutput}" default-value="false"
+     * @parameter default-value="true"
      */
     boolean logOutput
 
     /**
      * The file that Xvfb output will be written to.
      *
-     * @parameter expression="${logFile}" default-value="${project.build.directory}/selenium/xvfb.log"
-     * @required
+     * @parameter default-value="${project.build.directory}/selenium/xvfb.log"
      */
     File logFile
     
     /**
      * Flag to control if we background the process or block Maven execution.
      *
-     * @parameter default-value="false"
-     * @required
+     * @parameter default-value="true"
      */
     boolean background
-    
-    //
-    // Components
-    //
-    
-    /**
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    MavenProject project
 
     //
     // Mojo
@@ -154,33 +139,8 @@ class XvfbMojo
         t.start()
         
         //
-        // TODO: How to verify?
+        // TODO: Verify that Xvfb is up and running... how?
         //
-        
-        /*
-        log.debug('Waiting for Xvfb...')
-        
-        // Verify server started
-        URL url = new URL("http://localhost:$port/selenium-server")
-        boolean started = false
-        while (!started) {
-            if (errors) {
-                fail('Failed to start Selenium server', errors[0])
-            }
-
-            log.debug("Trying connection to: $url")
-
-            try {
-                url.openConnection().content
-                started = true
-            }
-            catch (Exception e) {
-                // ignore
-            }
-
-            Thread.sleep(1000)
-        }
-        */
         
         log.info('Xvfb started')
         
