@@ -118,7 +118,7 @@ class XvfbMojo
         ant.mkdir(dir: displayPropertiesFile.parentFile)
         def props = new Properties()
         props['DISPLAY'] = "$display"
-        props.store(displayPropertiesFile, 'Xvfb Display Properties')
+        props.store(displayPropertiesFile.newOutputStream(), 'Xvfb Display Properties')
         
         if (logOutput) {
             ant.mkdir(dir: logFile.parentFile)
