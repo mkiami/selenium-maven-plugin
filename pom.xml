@@ -190,6 +190,19 @@
         </plugins>
     </build>
     
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <source>1.4</source>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+    
     <profiles>
         <profile>
             <id>super-helpful-integration-tests</id>
