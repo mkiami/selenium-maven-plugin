@@ -44,7 +44,7 @@ class XvfbMojo
     /**
      * The default display to use.  SSH usualy eats up :10, so lets use :20.  That starts at port 6020.
      */
-    static final String DEFAULT_DISPLAY = ':20'
+    static final int DEFAULT_DISPLAY_NUMBER = 20
     
     /**
      * The X11 display to use.  Default value is <tt>:20</tt>.
@@ -188,10 +188,22 @@ class XvfbMojo
     private String detectUsableDisplay() {
         log.debug('Detecting a usable display...')
         
-        //
-        // HACK: For now just use the default
-        //
-        return DEFAULT_DISPLAY
+        boolean found = false
+        int n = DEFAULT_DISPLAY_NUMBER
+        
+        while (!found && (n <= DEFAULT_DISPLAY_NUMBER + 10)) {
+            def d = ":$n"
+            log.debug("Trying display: $d")
+            
+            if (!isDisplayInUse(d)) {
+                return d
+            }
+            else {
+                n++
+            }
+        }
+        
+        fail("Count not find a usable display")
     }
     
     /**
