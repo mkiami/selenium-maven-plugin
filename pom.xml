@@ -271,6 +271,9 @@
                                             <excludes>
                                                 <!-- Disable the selenese tests for now, they don't really work -->
                                                 <exclude>selenese*/pom.xml</exclude>
+                                                
+                                                <!-- Disable the Xvfb tests, as they are not very portable -->
+                                                <exclude>xvfb*/pom.xml</exclude>
                                             </excludes>
                                         </fileset>
                                     </projects>
