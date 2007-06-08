@@ -91,6 +91,7 @@
                 
                 <executions>
                     <execution>
+                        <id>start</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start-server</goal>
@@ -98,6 +99,14 @@
                         <configuration>
                             <background>true</background>
                         </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop-server</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
