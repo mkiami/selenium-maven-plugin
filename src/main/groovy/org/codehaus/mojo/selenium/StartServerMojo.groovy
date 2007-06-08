@@ -279,7 +279,7 @@ class StartServerMojo
         if (verifyBrowser) {
             log.info("Verifying broweser configuration for: $verifyBrowser")
             
-            def selenium = new DefaultSelenium('localhost', port, verifyBrowser, url)
+            def selenium = new DefaultSelenium('localhost', port, verifyBrowser, "http://localhost:$port/selenium-server")
             selenium.start()
             
             //

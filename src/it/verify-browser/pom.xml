@@ -23,11 +23,11 @@
     <modelVersion>4.0.0</modelVersion>
     
     <groupId>org.codehaus.mojo.selenium.it</groupId>
-    <artifactId>basic-usage</artifactId>
+    <artifactId>verify-browser</artifactId>
     <version>testing</version>
     
     <description>
-        Verify that basic usage of the server works.
+        Verify that browser validation is functional.
     </description>
     
     <repositories>
@@ -97,6 +97,7 @@
                         </goals>
                         <configuration>
                             <background>true</background>
+                            <verifyBrowser>*firefox</verifyBrowser>
                         </configuration>
                     </execution>
                 </executions>

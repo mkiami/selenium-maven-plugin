@@ -26,6 +26,10 @@
     <artifactId>selenese-1</artifactId>
     <version>testing</version>
     
+    <description>
+        Verify that basic html-based testing works.
+    </description>
+    
     <build>
         <plugins>
             <plugin>
