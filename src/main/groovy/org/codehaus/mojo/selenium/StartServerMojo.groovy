@@ -210,7 +210,7 @@ class StartServerMojo
                     
                     // Configure Selenium's logging
                     sysproperty(key: 'selenium.log', value: logFile)
-                    sysproperty(key: 'selenium.loglevel', value: debug == true ? 'DEBUG' : 'INFO')
+                    sysproperty(key: 'selenium.loglevel', value: debug ? 'DEBUG' : 'INFO')
                     sysproperty(key: 'log4j.configuration', value: 'org/codehaus/mojo/selenium/log4j.properties')
                     
                     arg(value: '-port')
