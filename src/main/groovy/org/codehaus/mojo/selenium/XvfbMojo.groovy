@@ -117,7 +117,7 @@ class XvfbMojo
         // Write out the display properties so that the start-server goal can pick it up
         ant.mkdir(dir: displayPropertiesFile.parentFile)
         def props = new Properties()
-        props['DISPLAY'] = "$display"
+        props.setProperty('DISPLAY', display)
         props.store(displayPropertiesFile.newOutputStream(), 'Xvfb Display Properties')
         
         if (logOutput) {
