@@ -25,9 +25,10 @@
 
 Selenium Maven Plugin
 
- Use this plugin to start a {{{http://www.openqa.org/selenium}Selenium}}
- {{{http://www.openqa.org/selenium-rc/}Remote Control}} server to support
- automated web-application testing.
+ Provides support for using {{{http://www.openqa.org/selenium}Selenium}} with Maven 2.
+ 
+ Use this plugin to start a Selenium {{{http://www.openqa.org/selenium-rc/}Remote Control}}
+ server to support automated web-application testing.
  
  This plugin is intended to support usage of the
  {{{http://www.openqa.org/selenium-rc/java.html}Selenium Java Client Driver}}
