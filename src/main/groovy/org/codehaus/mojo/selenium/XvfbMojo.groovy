@@ -42,7 +42,12 @@ class XvfbMojo
     String executable
     
     /**
-     * The X11 display to use.  Default value is <tt>:1</tt>.
+     * The default display to use.  SSH usualy eats up :10, so lets use :20.  That starts at port 6020.
+     */
+    static final String DEFAULT_DISPLAY = ':20'
+    
+    /**
+     * The X11 display to use.  Default value is <tt>:20</tt>.
      *
      * @parameter
      */
@@ -98,20 +103,14 @@ class XvfbMojo
         
         // Figure out what the display number is, and generate the properties file
         if (!display) {
-            //
-            // TODO: Try and detect which screen to use if not explicity configured,
-            //
-            
-            //
-            // Normally, the first X11 display is on port 6000, the next on port 6001,
-            // which get abbreviated as :0, :1 and so on.
-            //
-            
-            //
-            // HACK: For now just default to :1
-            //
-            display = ':1'
+            display = detectUsableDisplay()
         }
+        else {
+            if (isDisplayInUse(display)) {
+                fail("It appears that the configured display is already in use: $display")
+            }
+        }
+        
         log.info("Using display: $display")
         
         // Write out the display properties so that the start-server goal can pick it up
@@ -156,11 +155,20 @@ class XvfbMojo
         t.start()
         
         //
-        // TODO: Verify that Xvfb is up and running... how?
+        // Verify that Xvfb is up and running...
         //
-        //       Could potentialy use the escher X11 library, though its GPL (making this plugin GPL)
-        //       and doesn't appear to be in any Maven repo as of yet (that I could find).
+        // Could potentialy use the escher X11 library, though its GPL (making this plugin GPL)
+        // and doesn't appear to be in any Maven repo as of yet (that I could find).
         //
+        
+        //
+        // HACK: Hopefully the server can get started in a second, should put a more robust verify timeout around this
+        //
+        Thread.sleep(1000)
+        
+        if (!isDisplayInUse(display)) {
+            fail("Does not appear that the Xvfb process started on display: $display")
+        }
         
         log.info('Xvfb started')
         
@@ -168,5 +176,44 @@ class XvfbMojo
             log.info('Waiting for Xvfb to shutdown...')
             t.join()
         }
+    }
+    
+    /**
+     * Detect which display is usable.
+     */
+    private String detectUsableDisplay() {
+        log.debug('Detecting a usable display...')
+        
+        //
+        // Normally, the first X11 display is on port 6000, the next on port 6001,
+        // which get abbreviated as :0, :1 and so on.
+        //
+        
+        //
+        // HACK: For now just use the default
+        //
+        display = DEFAULT_DISPLAY
+    }
+    
+    /**
+     * Decode the port number for the display.
+     */
+    private int decodeDisplayPort(display) {
+        //
+        // TODO: Decode the port from the display
+        //
+    }
+    
+    /**
+     * Check if the given display is in use or not.
+     */
+    private boolean isDisplayInUse(display) {
+        log.debug("Checking if display is in use: $display")
+        
+        int port = decodeDisplayPort(display)
+        
+        //
+        // TODO: Check to see if something is listening on local host
+        //
     }
 }
