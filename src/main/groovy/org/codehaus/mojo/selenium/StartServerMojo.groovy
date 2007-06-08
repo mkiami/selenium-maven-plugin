@@ -21,6 +21,10 @@ package org.codehaus.mojo.selenium
 
 import org.codehaus.mojo.groovy.GroovyMojoSupport
 
+import org.apache.commons.lang.SystemUtils
+
+import com.thoughtworks.selenium.DefaultSelenium
+
 /**
  * Start the Selenium server.
  *
@@ -106,6 +110,14 @@ class StartServerMojo
     boolean background
 
     /**
+     * Attempt to verify the named browser configuration.  Must be one of the
+     * standard valid browser names (and must start with a *), e.g. *firefox, *iexplore, *custom.
+     *
+     * @parameter
+     */
+    String verifyBrowser
+    
+    /**
      * Flag to control if we start Selenium RC in multiWindow mode or not. The multiWindow mode
      * is useful for applications using frames/iframes which otherwise cannot be tested as the
      * same window is used for displaying both the Selenium tests and the AUT.
@@ -138,7 +150,7 @@ class StartServerMojo
 
     void execute() {
         log.info('Starting Selenium server...')
-
+        
         ant.mkdir(dir: workingDirectory)
         
         if (logOutput) {
@@ -165,6 +177,7 @@ class StartServerMojo
                          failonerror: true)
                 {
                     classpath() {
+                        // Add our plugin artifact to pick up log4j configuration
                         pathelement(location: getClass().protectionDomain.codeSource.location.file)
                         pathelement(location: pluginArifact('log4j:log4j'))
                         pathelement(location: pluginArifact('org.openqa.selenium.server:selenium-server'))
@@ -180,12 +193,22 @@ class StartServerMojo
                             env(key: key, value: value)
                         }
                     }
+                    // If the system looks like Unix (and not Mac OS X) then complain if DISPLAY is not set
+                    else if (SystemUtils.IS_OS_UNIX && !SystemUtils.IS_OS_MAC_OSX) {
+                        def tmp = System.getenv('DISPLAY')
+                        if (!tmp) {
+                            log.warn('OS appears to be Unix and no DISPLAY environment variable has been detected. ' + 
+                                     'Browser maybe unable to function correctly. ' + 
+                                     'Consider using the selenium:xvfb goal to enable headless operation.')
+                        }
+                    }
                     
                     if (logOutput) {
                         log.info("Redirecting output to: $logFile")
                         redirector(output: logFile)
                     }
                     
+                    // Configure Selenium's logging
                     sysproperty(key: 'selenium.log', value: logFile)
                     sysproperty(key: 'selenium.loglevel', value: debug == true ? 'DEBUG' : 'INFO')
                     sysproperty(key: 'log4j.configuration', value: 'org/codehaus/mojo/selenium/log4j.properties')
@@ -206,7 +229,8 @@ class StartServerMojo
                         arg(value: '-multiwindow')
                     }
                     
-                    def file = getUserExtentionsFile()
+                    // Maybe configure user extentions
+                    def file = createUserExtentionsFile()
                     if (file) {
                         log.info("User extensions: $file")
                         arg(value: '-userExtensions')
@@ -246,13 +270,26 @@ class StartServerMojo
             Thread.sleep(1000)
         }
 
-        log.info('Selenium server started')
+        //
+        // Use the Java client API to try and validate that it can actually
+        // fire up a browser.  As just launching the server won't really
+        // provide feedback if firefox (or whatever browser) isn't on the path/runnable.
+        //
         
-        //
-        // TODO: Use the Java client API to try and validate that it can actually
-        //       fire up a browser.  As just launching the server won't really
-        //       provide feedback if firefox (or whatever browser) isn't on the path/runnable.
-        //
+        if (verifyBrowser) {
+            log.info("Verifying broweser configuration for: $verifyBrowser")
+            
+            def selenium = new DefaultSelenium('localhost', port, verifyBrowser, url)
+            selenium.start()
+            
+            //
+            // TODO: Try open?
+            //
+            
+            selenium.stop()
+        }
+        
+        log.info('Selenium server started')
         
         if (!background) {
             log.info('Waiting for Selenium to shutdown...')
@@ -261,9 +298,9 @@ class StartServerMojo
     }
 
     /**
-     * Retutn the user-extentions.js file to use, or null if it should not be installed.
+     * Create the user-extentions.js file to use, or null if it should not be installed.
      */
-    private File getUserExtentionsFile() {
+    private File createUserExtentionsFile() {
         if (!defaultUserExtensionsEnabled && userExtensions == null) {
             return null
         }
@@ -271,9 +308,8 @@ class StartServerMojo
         def resolveResource = { name ->
             if (name == null) return null
             
-            URL url
-            
-            File file = new File(name)
+            def url
+            def file = new File(name)
             if (file.exists()) {
                 url = file.toURL()
             }
@@ -296,7 +332,7 @@ class StartServerMojo
         }
         
         // File needs to be named 'user-extensions.js' or Selenium server will puke
-        File file = new File(workingDirectory, 'user-extensions.js')
+        def file = new File(workingDirectory, 'user-extensions.js')
         if (file.exists()) {
             log.debug("Reusing previously generated file: $file")
             return file
@@ -305,7 +341,7 @@ class StartServerMojo
         def writer = file.newPrintWriter()
         
         if (defaultUserExtensionsEnabled) {
-            URL url = resolveResource(defaultUserExtensions)
+            def url = resolveResource(defaultUserExtensions)
             log.debug("Using defaults: $url")
 
             writer.println('//')
@@ -315,7 +351,7 @@ class StartServerMojo
         }
 
         if (userExtensions) {
-            URL url = resolveResource(userExtensions)
+            def url = resolveResource(userExtensions)
             log.debug("Using user extentions: $url")
 
             writer.println('//')
