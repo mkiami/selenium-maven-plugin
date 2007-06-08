@@ -19,8 +19,6 @@
 
 package org.codehaus.mojo.selenium
 
-import org.codehaus.mojo.groovy.GroovyMojoSupport
-
 import org.apache.commons.lang.SystemUtils
 
 import com.thoughtworks.selenium.DefaultSelenium
@@ -33,15 +31,8 @@ import com.thoughtworks.selenium.DefaultSelenium
  * @version $Id$
  */
 class StartServerMojo
-    extends GroovyMojoSupport
+    extends ServerMojoSupport
 {
-    /**
-     * The port number the server will use.
-     *
-     * @parameter expression="${port}" default-value="4444"
-     */
-    int port
-
     /**
      * Timeout for the server in seconds.
      *

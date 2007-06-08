@@ -22,24 +22,17 @@ package org.codehaus.mojo.selenium
 import org.codehaus.mojo.groovy.GroovyMojoSupport
 
 /**
- * Stop the Selenium server.
- *
- * @goal stop-server
+ * Support for Selenium server mojos.
  *
  * @version $Id$
  */
-class StopServerMojo
-    extends ServerMojoSupport
+abstract class ServerMojoSupport
+    extends GroovyMojoSupport
 {
-    //
-    // Mojo
-    //
-
-    void execute() {
-        log.info('Stopping Selenium server...')
-        
-        def url = new URL("http://localhost:$port/selenium-server/driver/?cmd=shutDown")
-        
-        url.openConnection().content
-    }
+    /**
+     * The port number of the server to connect to.
+     *
+     * @parameter expression="${port}" default-value="4444"
+     */
+    int port
 }
