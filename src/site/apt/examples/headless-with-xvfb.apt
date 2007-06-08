@@ -25,6 +25,53 @@
 
 Headless X11 with Xvfb
 
+ To allow builds on headless Unix systems to function correctly with Selenium, you may
+ need to configure Xvfb (virtual framebuffer X server for X Version 11).
+ 
+ Use the <<<xvfb>>> goal to start up an Xvfb process.  This will try to detect an
+ unused X11 display starting from <<<:20>>> and configure the Selenium server with that
+ <<<DISPLAY>>> environment variable so that when launching browsers they startup using
+ the virutal X11 server.
+
++----------+
+<plugins>
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>selenium-maven-plugin</artifactId>
+        
+        <executions>
+            <execution>
+                <id>xvfb</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                    <goal>xvfb</goal>
+                </goals>
+            </execution>
+            
+            <execution>
+                <id>selenium</id>
+                <phase>pre-integration-test</phase>
+                <goals>
+                    <goal>start-server</goal>
+                </goals>
+                <configuration>
+                    <background>true</background>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+</plugins>
++----------+
+
+ <<NOTE:>>
+ For execution of Xvfb to work correctly as a non-root user, the Xvfb process needs to be SUID-root.
+
++----------+
+chmod u+s `which Xvfb`
++----------+
+
+ You can also configure an explicit display to be used instead of autodetecting:
+
 +----------+
 <plugins>
     <plugin>
@@ -39,7 +86,7 @@ Headless X11 with Xvfb
                     <goal>xvfb</goal>
                 </goals>
                 <configuration>
-                    <background>true</background>
+                    <display>:2</display>
                 </configuration>
             </execution>
             
@@ -57,3 +104,4 @@ Headless X11 with Xvfb
     </plugin>
 </plugins>
 +----------+
+
