@@ -279,17 +279,18 @@ class StartServerMojo
         if (verifyBrowser) {
             log.info("Verifying broweser configuration for: $verifyBrowser")
             
-            def selenium = new DefaultSelenium('localhost', port, verifyBrowser, "http://localhost:$port/selenium-server")
-            
             try {
-                selenium.start()
+                def selenium = new DefaultSelenium('localhost', port, verifyBrowser, "http://localhost:$port/selenium-server")
                 
-                //
-                // TODO: Try open?
-                //
+                try {
+                    selenium.start()
+                }
+                finally {
+                    selenium.stop()
+                }
             }
-            finally {
-                selenium.stop()
+            catch (Exception e) {
+                fail("Failed to verify browser: $verifyBrowser", e)
             }
         }
         
