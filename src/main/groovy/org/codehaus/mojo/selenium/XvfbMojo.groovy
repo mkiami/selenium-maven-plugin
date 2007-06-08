@@ -154,20 +154,24 @@ class XvfbMojo
         Thread t = new Thread(runner, 'Xvfb Runner')
         t.start()
         
-        //
-        // Verify that Xvfb is up and running...
-        //
-        // Could potentialy use the escher X11 library, though its GPL (making this plugin GPL)
-        // and doesn't appear to be in any Maven repo as of yet (that I could find).
-        //
+        log.debug('Waiting for Xvfb...')
         
         //
-        // HACK: Hopefully the server can get started in a second, should put a more robust verify timeout around this
+        // TODO: Add a verify timeout here to kill this after a while...
         //
-        Thread.sleep(1000)
         
-        if (!isDisplayInUse(display)) {
-            fail("Does not appear that the Xvfb process started on display: $display")
+        boolean started = false
+        while (!started) {
+            if (errors) {
+                fail('Failed to start Xvfb', errors[0])
+            }
+            
+            if (isDisplayInUse(display)) {
+                started = true
+            }
+            else {
+                Thread.sleep(1000)
+            }
         }
         
         log.info('Xvfb started')
