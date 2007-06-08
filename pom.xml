@@ -38,6 +38,11 @@
         Support for using Selenium with Maven 2.
     </description>
     
+    <issueManagement>
+        <system>jira</system>
+        <url>http://jira.codehaus.org/browse/MSELENIUM</url>
+    </issueManagement>
+    
     <licenses>
         <license>
             <name>Apache License 2</name>
