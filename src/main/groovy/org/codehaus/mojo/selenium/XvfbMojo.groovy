@@ -192,7 +192,7 @@ class XvfbMojo
         //
         // HACK: For now just use the default
         //
-        display = DEFAULT_DISPLAY
+        return DEFAULT_DISPLAY
     }
     
     /**
@@ -202,6 +202,8 @@ class XvfbMojo
         //
         // TODO: Decode the port from the display
         //
+        
+        return -1
     }
     
     /**
@@ -215,5 +217,7 @@ class XvfbMojo
         //
         // TODO: Check to see if something is listening on local host
         //
+        
+        return false
     }
 }
