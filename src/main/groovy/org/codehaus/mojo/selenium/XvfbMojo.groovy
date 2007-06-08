@@ -185,11 +185,6 @@ class XvfbMojo
         log.debug('Detecting a usable display...')
         
         //
-        // Normally, the first X11 display is on port 6000, the next on port 6001,
-        // which get abbreviated as :0, :1 and so on.
-        //
-        
-        //
         // HACK: For now just use the default
         //
         return DEFAULT_DISPLAY
@@ -199,25 +194,34 @@ class XvfbMojo
      * Decode the port number for the display.
      */
     private int decodeDisplayPort(display) {
+        assert display
+        
+        def m = display =~ /[^:]*:([0-9]*)(\.([0-9]*))?/
+        
+        def i = Integer.parseInt(m[0][1])
+        
         //
-        // TODO: Decode the port from the display
+        // Normally, the first X11 display is on port 6000, the next on port 6001,
+        // which get abbreviated as :0, :1 and so on.
         //
         
-        return -1
+        return 6000 + i
     }
     
     /**
      * Check if the given display is in use or not.
      */
     private boolean isDisplayInUse(display) {
-        log.debug("Checking if display is in use: $display")
-        
         int port = decodeDisplayPort(display)
         
-        //
-        // TODO: Check to see if something is listening on local host
-        //
+        log.debug("Checking if display is in use: $display on port: $port")
         
-        return false
+        try {
+            def socket = new Socket('localhost', port)
+            return true
+        }
+        catch (ConnectException e) {
+            return false
+        }
     }
 }
