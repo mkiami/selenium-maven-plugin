@@ -303,6 +303,10 @@ class XvfbMojo
             // FIXME: This spits out junk to STDERR, not very nice... :-(
             //
         }
+        
+        if (!authenticationFile.exists()) {
+            fail("It appears that 'xauth' failed to create the Xauthority file: $authenticationFile")
+        }
     }
     
     /**
