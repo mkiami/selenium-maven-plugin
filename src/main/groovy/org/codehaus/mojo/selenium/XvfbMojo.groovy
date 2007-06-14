@@ -294,6 +294,10 @@ class XvfbMojo
             arg(value: display)
             arg(value: xauthProtocol)
             arg(value: createCookie())
+            
+            //
+            // FIXME: This spits out junk to STDERR, not very nice... :-(
+            //
         }
     }
     
