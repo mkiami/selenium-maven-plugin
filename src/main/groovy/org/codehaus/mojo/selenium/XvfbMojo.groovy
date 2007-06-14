@@ -26,8 +26,10 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
  * Use this in combonation with the <tt>start-server</tt> goal to allow browsers
  * to be launched on headless unix systems.
  *
- * Uses 'xauth' to setup authentication for the Xvfb instance to allow running tests using the
+ * <p>
+ * Optionally uses 'xauth' to setup authentication for the Xvfb instance to allow running tests using the
  * frame buffer server when another X server is already running.
+ * </p>
  *
  * @goal xvfb
  *
