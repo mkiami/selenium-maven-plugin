@@ -166,6 +166,10 @@ class XvfbMojo
         
         def runner = {
             try {
+                //
+                // TODO: Really need a way to check if this will execute or not first
+                //
+                
                 ant.exec(executable: xvfbExecutable, failonerror: true) {
                     if (logOutput) {
                         log.info("Redirecting output to: $logFile")
@@ -275,6 +279,10 @@ class XvfbMojo
         log.info("Using Xauthority file: $authenticationFile")
         
         ant.delete(file: authenticationFile)
+        
+        //
+        // TODO: Really need a way to check if this will execute or not first
+        //
         
         // Use xauth to configure authentication for the display using a generated cookie
         ant.exec(executable: xauthExecutable, failonerror: true) {
