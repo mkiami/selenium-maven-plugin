@@ -22,7 +22,7 @@ package org.codehaus.mojo.selenium
 import java.util.Timer
 
 //
-// TODO: Move to groovy-mojo-support, as this is the type of thing that I use all over the place
+// TODO: Drop and use org.codehaus.mojo.groovy.util.ProcessLauncher once the latest groovy mojo bits are released.
 //
 
 /**

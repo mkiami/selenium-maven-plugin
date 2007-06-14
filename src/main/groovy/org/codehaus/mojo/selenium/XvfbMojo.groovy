@@ -158,7 +158,9 @@ class XvfbMojo
             ant.mkdir(dir: logFile.parentFile)
         }
         
-        def process = {
+        def launcher = new ProcessLauncher(name: 'Xvfb', background: background)
+        
+        launcher.process = {
             ant.exec(executable: xvfbExecutable, failonerror: true) {
                 if (logOutput) {
                     log.info("Redirecting output to: $logFile")
@@ -190,15 +192,9 @@ class XvfbMojo
             //
         }
         
-        def verifier = {
+        launcher.verifier = {
             return isDisplayInUse(display)
         }
-        
-        def launcher = new ProcessLauncher(
-                name: 'Xvfb',
-                process: process,
-                verifier: verifier,
-                background: background)
         
         launcher.launch()
     }

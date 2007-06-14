@@ -157,7 +157,9 @@ class StartServerMojo
             return artifact.file
         }
         
-        def process = {
+        def launcher = new ProcessLauncher(name: 'Selenium Server', background: background)
+        
+        launcher.process = {
             ant.java(classname: 'org.openqa.selenium.server.SeleniumServer',
                      fork: true,
                      dir: workingDirectory,
@@ -228,7 +230,7 @@ class StartServerMojo
         
         URL url = new URL("http://localhost:$port/selenium-server")
         
-        def verifier = {
+        launcher.verifier = {
             log.debug("Trying connection to: $url")
             
             try {
@@ -264,12 +266,6 @@ class StartServerMojo
                 return false
             }
         }
-        
-        def launcher = new ProcessLauncher(
-                name: 'Selenium Server',
-                process: process,
-                verifier: verifier,
-                background: background)
         
         launcher.launch()
     }

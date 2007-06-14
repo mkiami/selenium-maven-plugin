@@ -128,8 +128,8 @@ class SeleneseMojo
         server.start()
         
         try {
-            HTMLLauncher launcher = new HTMLLauncher(server)
-            String result = launcher.runHTMLSuite(browser, "$startURL", suite, results, timeoutInSeconds, multiWindow)
+            def launcher = new HTMLLauncher(server)
+            def result = launcher.runHTMLSuite(browser, "$startURL", suite, results, timeoutInSeconds, multiWindow)
         }
         finally {
             server.stop()
