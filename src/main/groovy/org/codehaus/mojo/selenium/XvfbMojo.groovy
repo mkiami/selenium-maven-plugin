@@ -26,6 +26,9 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
  * Use this in combonation with the <tt>start-server</tt> goal to allow browsers
  * to be launched on headless unix systems.
  *
+ * Uses 'xauth' to setup authentication for the Xvfb instance to allow running tests using the
+ * frame buffer server when another X server is already running.
+ *
  * @goal xvfb
  *
  * @version $Id$
@@ -34,12 +37,42 @@ class XvfbMojo
     extends GroovyMojoSupport
 {
     /**
-     * The Xvfb command to execute.
+     * The 'Xvfb' command to execute.
      *
      * @parameter default-value="Xvfb"
      * @required
      */
-    String executable
+    String xvfbExecutable
+    
+    /**
+     * Use 'xauth' to setup permissions for the Xvfb server.  This requires 'xauth' be installed
+     * and may be required when an X server is already running.
+     *
+     * @paramter default-value="true"
+     */
+    boolean xauthEnabled
+    
+    /**
+     * The 'xauth' command to execute.
+     *
+     * @parameter default-value="xauth"
+     */
+    String xauthExecutable
+    
+    /**
+     * The 'xauth' protocol.
+     *
+     * @parameter default-value="."
+     */
+    String xauthProtocol
+    
+    /**
+     * The file where X authentication data is stored for the Xvfb session.
+     * Default is to generate a temporary file.
+     *
+     * @parameter
+     */
+    File authenticationFile
     
     /**
      * The default display to use.  SSH usualy eats up :10, so lets use :20.  That starts at port 6020.
@@ -113,25 +146,34 @@ class XvfbMojo
         
         log.info("Using display: $display")
         
-        // Write out the display properties so that the start-server goal can pick it up
-        ant.mkdir(dir: displayPropertiesFile.parentFile)
-        def props = new Properties()
-        props.setProperty('DISPLAY', display)
-        props.store(displayPropertiesFile.newOutputStream(), 'Xvfb Display Properties')
+        if (xauthEnabled) {
+            setupXauthority()
+        }
+        
+        createDisplayProperties()
         
         if (logOutput) {
             ant.mkdir(dir: logFile.parentFile)
         }
+        
+        //
+        // TODO: Abstract this process launcher into a helper class to allow the invoke, verify and timeout bits
+        //       to be easily reused.  The exception handling bits too, to simply the runner closure as well.
+        //
         
         // Holds any exception that was thrown during startup
         def errors = []
         
         def runner = {
             try {
-                ant.exec(executable: executable, failonerror: true) {
+                ant.exec(executable: xvfbExecutable, failonerror: true) {
                     if (logOutput) {
                         log.info("Redirecting output to: $logFile")
                         redirector(output: logFile)
+                    }
+                    
+                    if (xauthEnabled) {
+                        env(key: 'XAUTHORITY', file: authenticationFile)
                     }
                     
                     // Set the display
@@ -144,6 +186,15 @@ class XvfbMojo
                         }
                     }
                 }
+                
+                if (xauthEnabled) {
+                    ant.delete(file: authenticationFile)
+                }
+                
+                //
+                // FIXME: Really need an easy way to nuke this process... Ant's exec interface 
+                //        doesn't really cut it :-(
+                //
             }
             catch (Exception e) {
                 errors << e
@@ -179,6 +230,51 @@ class XvfbMojo
         if (!background) {
             log.info('Waiting for Xvfb to shutdown...')
             t.join()
+        }
+    }
+    
+    private void createDisplayProperties() {
+        // Write out the display properties so that the start-server goal can pick it up
+        ant.mkdir(dir: displayPropertiesFile.parentFile)
+        def props = new Properties()
+        props.setProperty('DISPLAY', display)
+        props.setProperty('XAUTHORITY', authenticationFile.canonicalPath)
+        props.store(displayPropertiesFile.newOutputStream(), 'Xvfb Display Properties')
+    }
+    
+    /**
+     * Generate a 128-bit random hexadecimal number for use with the X authority system.
+     */
+    private String createCookie() {
+        def cookie
+        
+        while (cookie < 0) {
+            byte[] bytes = new byte[16]
+            new Random().nextBytes(bytes)
+            cookie = new BigInteger(bytes)
+        }
+        
+        return cookie.toString(16)
+    }
+    
+    /**
+     * Setup the X authentication file (Xauthority)
+     */
+    private void setupXauthority() {
+        if (!authenticationFile) {
+            authenticationFile = File.createTempFile('Xvfb', '.Xauthority')
+        }
+        
+        log.info("Using Xauthority file: $authenticationFile")
+        
+        ant.delete(file: authenticationFile)
+        
+        // Use xauth to configure authentication for the display using a generated cookie
+        ant.exec(executable: xauthExecutable, failonerror: true) {
+            arg(value: 'add')
+            arg(value: display)
+            arg(value: xauthProtocol)
+            arg(value: createCookie())
         }
     }
     
