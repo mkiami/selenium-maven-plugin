@@ -19,6 +19,8 @@
 
 package org.codehaus.mojo.selenium
 
+import java.util.Timer
+
 /**
  * Helper to execute a process and perform some verification logic to determine if the process is up or not.
  *
@@ -37,6 +39,8 @@ class ProcessLauncher
     Closure verifier
     
     int verifyWaitDelay = 1000
+    
+    int timeout = -1
     
     boolean background = false
     
@@ -61,15 +65,25 @@ class ProcessLauncher
         t.start()
         
         if (verifier) {
-            //
-            // TODO: Add timeout
-            //
+            def timer = new Timer("$name Timer", true)
+            
+            def timedOut = false
+            
+            if (timeout > 0) {
+                timer.runAfter(timeout * 1000, {
+                    timedOut = true
+                })
+            }
             
             def started = false
             
             println "Waiting for ${name}..."
             
             while (!started) {
+                if (timedOut) {
+                    throw new Exception("Unable to verify if $name was started in the given time ($timeout seconds)")
+                }
+                
                 if (errors) {
                     throw new Exception("Failed to start: $name", errors[0])
                 }
@@ -81,12 +95,16 @@ class ProcessLauncher
                     Thread.sleep(verifyWaitDelay)
                 }
             }
+            
+            //
+            // TODO: Should call TimerTask.cancel() here, but we don't have easy access to it via Timer.runAfter()
+            //
         }
         
         println "$name started"
         
         if (!background) {
-            println "Waiting for $name to shutdown"
+            println "Waiting for $name to shutdown..."
             
             t.join()
             
