@@ -260,6 +260,10 @@ class XvfbMojo
     private String createCookie() {
         def cookie
         
+        //
+        // FIXME: Probably a better way to make sure we don't get negative values...
+        //
+        
         while (cookie < 0) {
             byte[] bytes = new byte[16]
             new Random().nextBytes(bytes)
