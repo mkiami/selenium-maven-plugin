@@ -158,85 +158,49 @@ class XvfbMojo
             ant.mkdir(dir: logFile.parentFile)
         }
         
-        //
-        // TODO: Abstract this process launcher into a helper class to allow the invoke, verify and timeout bits
-        //       to be easily reused.  The exception handling bits too, to simply the runner closure as well.
-        //
-        
-        // Holds any exception that was thrown during startup
-        def errors = []
-        
-        def runner = {
-            try {
-                //
-                // TODO: Really need a way to check if this will execute or not first
-                //
-                
-                ant.exec(executable: xvfbExecutable, failonerror: true) {
-                    if (logOutput) {
-                        log.info("Redirecting output to: $logFile")
-                        redirector(output: logFile)
-                    }
-                    
-                    if (xauthEnabled) {
-                        env(key: 'XAUTHORITY', file: authenticationFile)
-                    }
-                    
-                    // Set the display
-                    arg(value: display)
-                    
-                    // Add extra options
-                    if (options) {
-                        options.each {
-                            arg(value: it)
-                        }
-                    }
+        def process = {
+            ant.exec(executable: xvfbExecutable, failonerror: true) {
+                if (logOutput) {
+                    log.info("Redirecting output to: $logFile")
+                    redirector(output: logFile)
                 }
                 
                 if (xauthEnabled) {
-                    ant.delete(file: authenticationFile)
+                    env(key: 'XAUTHORITY', file: authenticationFile)
                 }
                 
-                //
-                // FIXME: Really need an easy way to nuke this process... Ant's exec interface 
-                //        doesn't really cut it :-(
-                //
-            }
-            catch (Exception e) {
-                errors << e
-            }
-        }
-        
-        // Start the server int a seperate thread
-        Thread t = new Thread(runner, 'Xvfb Runner')
-        t.start()
-        
-        log.debug('Waiting for Xvfb...')
-        
-        //
-        // TODO: Add a verify timeout here to kill this after a while...
-        //
-        
-        boolean started = false
-        while (!started) {
-            if (errors) {
-                fail('Failed to start Xvfb', errors[0])
+                // Set the display
+                arg(value: display)
+                
+                // Add extra options
+                if (options) {
+                    options.each {
+                        arg(value: it)
+                    }
+                }
             }
             
-            if (isDisplayInUse(display)) {
-                started = true
+            if (xauthEnabled) {
+                ant.delete(file: authenticationFile)
             }
-            else {
-                Thread.sleep(1000)
-            }
+            
+            //
+            // FIXME: Really need an easy way to nuke this process... Ant's exec interface 
+            //        doesn't really cut it :-(
+            //
         }
         
-        log.info('Xvfb started')
-        
-        if (!background) {
-            log.info('Waiting for Xvfb to shutdown...')
-            t.join()
+        def verifier = {
+            return isDisplayInUse(display)
         }
+        
+        def launcher = new ProcessLauncher(
+                name: 'Xvfb',
+                process: process,
+                verifier: verifier,
+                background: background)
+        
+        launcher.launch()
     }
     
     private void createDisplayProperties() {

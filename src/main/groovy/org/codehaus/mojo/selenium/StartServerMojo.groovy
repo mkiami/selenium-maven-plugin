@@ -157,140 +157,121 @@ class StartServerMojo
             return artifact.file
         }
         
-        // Holds any exception that was thrown during startup
-        def errors = []
-        
-        def runner = {
-            try {
-                ant.java(classname: 'org.openqa.selenium.server.SeleniumServer',
-                         fork: true,
-                         dir: workingDirectory,
-                         failonerror: true)
-                {
-                    classpath() {
-                        // Add our plugin artifact to pick up log4j configuration
-                        pathelement(location: getClass().protectionDomain.codeSource.location.file)
-                        pathelement(location: pluginArifact('log4j:log4j'))
-                        pathelement(location: pluginArifact('org.openqa.selenium.server:selenium-server'))
-                    }
+        def process = {
+            ant.java(classname: 'org.openqa.selenium.server.SeleniumServer',
+                     fork: true,
+                     dir: workingDirectory,
+                     failonerror: true)
+            {
+                classpath() {
+                    // Add our plugin artifact to pick up log4j configuration
+                    pathelement(location: getClass().protectionDomain.codeSource.location.file)
+                    pathelement(location: pluginArifact('log4j:log4j'))
+                    pathelement(location: pluginArifact('org.openqa.selenium.server:selenium-server'))
+                }
+                
+                // Set display properties if the properties file exists
+                if (displayPropertiesFile && displayPropertiesFile.exists()) {
+                    log.info("Including display properties from: $displayPropertiesFile")
                     
-                    // Set display properties if the properties file exists
-                    if (displayPropertiesFile && displayPropertiesFile.exists()) {
-                        log.info("Including display properties from: $displayPropertiesFile")
-                        
-                        def props = new Properties()
-                        props.load(displayPropertiesFile.newInputStream())
-                        props.each { key, value ->
-                            env(key: key, value: value)
-                        }
-                    }
-                    // If the system looks like Unix (and not Mac OS X) then complain if DISPLAY is not set
-                    else if (SystemUtils.IS_OS_UNIX && !SystemUtils.IS_OS_MAC_OSX) {
-                        def tmp = System.getenv('DISPLAY')
-                        if (!tmp) {
-                            log.warn('OS appears to be Unix and no DISPLAY environment variable has been detected. ' + 
-                                     'Browser maybe unable to function correctly. ' + 
-                                     'Consider using the selenium:xvfb goal to enable headless operation.')
-                        }
-                    }
-                    
-                    if (logOutput) {
-                        log.info("Redirecting output to: $logFile")
-                        redirector(output: logFile)
-                    }
-                    
-                    // Configure Selenium's logging
-                    sysproperty(key: 'selenium.log', value: logFile)
-                    sysproperty(key: 'selenium.loglevel', value: debug ? 'DEBUG' : 'INFO')
-                    sysproperty(key: 'log4j.configuration', value: 'org/codehaus/mojo/selenium/log4j.properties')
-                    
-                    arg(value: '-port')
-                    arg(value: "$port")
-                    
-                    if (debug) {
-                        arg(value: '-debug')
-                    }
-                    
-                    if (timeout > 0) {
-                        arg(value: '-timeout')
-                        arg(value: "$timeout")
-                    }
-                    
-                    if (multiWindow) {
-                        arg(value: '-multiwindow')
-                    }
-                    
-                    // Maybe configure user extentions
-                    def file = createUserExtentionsFile()
-                    if (file) {
-                        log.info("User extensions: $file")
-                        arg(value: '-userExtensions')
-                        arg(file: file)
+                    def props = new Properties()
+                    props.load(displayPropertiesFile.newInputStream())
+                    props.each { key, value ->
+                        env(key: key, value: value)
                     }
                 }
-            }
-            catch (Exception e) {
-                errors << e
+                // If the system looks like Unix (and not Mac OS X) then complain if DISPLAY is not set
+                else if (SystemUtils.IS_OS_UNIX && !SystemUtils.IS_OS_MAC_OSX) {
+                    def tmp = System.getenv('DISPLAY')
+                    if (!tmp) {
+                        log.warn('OS appears to be Unix and no DISPLAY environment variable has been detected. ' + 
+                                 'Browser maybe unable to function correctly. ' + 
+                                 'Consider using the selenium:xvfb goal to enable headless operation.')
+                    }
+                }
+                
+                if (logOutput) {
+                    log.info("Redirecting output to: $logFile")
+                    redirector(output: logFile)
+                }
+                
+                // Configure Selenium's logging
+                sysproperty(key: 'selenium.log', value: logFile)
+                sysproperty(key: 'selenium.loglevel', value: debug ? 'DEBUG' : 'INFO')
+                sysproperty(key: 'log4j.configuration', value: 'org/codehaus/mojo/selenium/log4j.properties')
+                
+                arg(value: '-port')
+                arg(value: "$port")
+                
+                if (debug) {
+                    arg(value: '-debug')
+                }
+                
+                if (timeout > 0) {
+                    arg(value: '-timeout')
+                    arg(value: "$timeout")
+                }
+                
+                if (multiWindow) {
+                    arg(value: '-multiwindow')
+                }
+                
+                // Maybe configure user extentions
+                def file = createUserExtentionsFile()
+                if (file) {
+                    log.info("User extensions: $file")
+                    arg(value: '-userExtensions')
+                    arg(file: file)
+                }
             }
         }
         
-        // Start the server int a seperate thread
-        Thread t = new Thread(runner, 'Selenium Server Runner')
-        t.start()
-
-        log.debug('Waiting for Selenium server...')
-
-        // Verify server started
         URL url = new URL("http://localhost:$port/selenium-server")
-        boolean started = false
-        while (!started) {
-            if (errors) {
-                fail('Failed to start Selenium server', errors[0])
-            }
-
-            log.debug("Trying connection to: $url")
-
-            try {
-                url.openConnection().content
-                started = true
-            }
-            catch (Exception e) {
-                // ignore
-            }
-
-            Thread.sleep(1000)
-        }
-
-        //
-        // Use the Java client API to try and validate that it can actually
-        // fire up a browser.  As just launching the server won't really
-        // provide feedback if firefox (or whatever browser) isn't on the path/runnable.
-        //
         
-        if (verifyBrowser) {
-            log.info("Verifying broweser configuration for: $verifyBrowser")
+        def verifier = {
+            log.debug("Trying connection to: $url")
             
             try {
-                def selenium = new DefaultSelenium('localhost', port, verifyBrowser, "http://localhost:$port/selenium-server")
+                url.openConnection().content
                 
-                try {
-                    selenium.start()
+                //
+                // Use the Java client API to try and validate that it can actually
+                // fire up a browser.  As just launching the server won't really
+                // provide feedback if firefox (or whatever browser) isn't on the path/runnable.
+                //
+                
+                if (verifyBrowser) {
+                    log.info("Verifying broweser configuration for: $verifyBrowser")
+                    
+                    try {
+                        def selenium = new DefaultSelenium('localhost', port, verifyBrowser, "http://localhost:$port/selenium-server")
+                        
+                        try {
+                            selenium.start()
+                        }
+                        finally {
+                            selenium.stop()
+                        }
+                    }
+                    catch (Exception e) {
+                        fail("Failed to verify browser: $verifyBrowser", e)
+                    }
                 }
-                finally {
-                    selenium.stop()
-                }
+                
+                return true
             }
             catch (Exception e) {
-                fail("Failed to verify browser: $verifyBrowser", e)
+                return false
             }
         }
         
-        log.info('Selenium server started')
+        def launcher = new ProcessLauncher(
+                name: 'Selenium Server',
+                process: process,
+                verifier: verifier,
+                background: background)
         
-        if (!background) {
-            log.info('Waiting for Selenium to shutdown...')
-            t.join()
-        }
+        launcher.launch()
     }
 
     /**
