@@ -21,6 +21,10 @@ package org.codehaus.mojo.selenium
 
 import java.util.Timer
 
+//
+// TODO: Move to groovy-mojo-support, as this is the type of thing that I use all over the place
+//
+
 /**
  * Helper to execute a process and perform some verification logic to determine if the process is up or not.
  *
