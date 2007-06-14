@@ -269,6 +269,7 @@ class XvfbMojo
     private void setupXauthority() {
         if (!authenticationFile) {
             authenticationFile = File.createTempFile('Xvfb', '.Xauthority')
+            authenticationFile.deleteOnExit()
         }
         
         log.info("Using Xauthority file: $authenticationFile")
