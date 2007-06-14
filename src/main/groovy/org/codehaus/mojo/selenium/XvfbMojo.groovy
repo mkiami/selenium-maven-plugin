@@ -277,6 +277,8 @@ class XvfbMojo
         
         // Use xauth to configure authentication for the display using a generated cookie
         ant.exec(executable: xauthExecutable, failonerror: true) {
+            env(key: 'XAUTHORITY', file: authenticationFile)
+            
             arg(value: 'add')
             arg(value: display)
             arg(value: xauthProtocol)
