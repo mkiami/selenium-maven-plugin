@@ -48,7 +48,7 @@ class XvfbMojo
      * Use 'xauth' to setup permissions for the Xvfb server.  This requires 'xauth' be installed
      * and may be required when an X server is already running.
      *
-     * @paramter default-value="true"
+     * @parameter default-value="true"
      */
     boolean xauthEnabled
     
@@ -238,7 +238,13 @@ class XvfbMojo
         ant.mkdir(dir: displayPropertiesFile.parentFile)
         def props = new Properties()
         props.setProperty('DISPLAY', display)
-        props.setProperty('XAUTHORITY', authenticationFile.canonicalPath)
+        
+        // Write the xauth file so clients pick up the right perms
+        if (xauthEnabled) {
+            assert authenticationFile
+            props.setProperty('XAUTHORITY', authenticationFile.canonicalPath)
+        }
+        
         props.store(displayPropertiesFile.newOutputStream(), 'Xvfb Display Properties')
     }
     
