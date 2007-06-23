@@ -127,9 +127,10 @@ class SeleneseMojo
         def server = new SeleniumServer(port, slowResources, multiWindow)
         server.start()
         
+        def result = 'FAILED'
         try {
             def launcher = new HTMLLauncher(server)
-            def result = launcher.runHTMLSuite(browser, "$startURL", suite, results, timeoutInSeconds, multiWindow)
+            result = launcher.runHTMLSuite(browser, "$startURL", suite, results, timeoutInSeconds, multiWindow)
         }
         finally {
             server.stop()
