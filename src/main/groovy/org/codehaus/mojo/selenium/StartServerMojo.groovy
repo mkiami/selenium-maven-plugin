@@ -118,6 +118,14 @@ class StartServerMojo
     boolean multiWindow
 
     /**
+     * Flag to control if we start Selenium RC in alwaysProxy mode or not. The alwaysProxy mode
+     * forces all browser traffic through the proxy.
+     *
+     * @parameter default-value="false"
+     */
+    boolean alwaysProxy
+
+    /**
      * The location of the file to read the display properties.
      *
      * @parameter default-value="${project.build.directory}/selenium/display.properties"
@@ -216,6 +224,10 @@ class StartServerMojo
                 
                 if (multiWindow) {
                     arg(value: '-multiwindow')
+                }
+                
+                if (alwaysProxy) {
+                    arg(value: '-alwaysProxy')
                 }
                 
                 // Maybe configure user extentions
