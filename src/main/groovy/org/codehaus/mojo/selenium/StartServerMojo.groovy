@@ -48,21 +48,21 @@ class StartServerMojo
     boolean debug
     
     /**
-     * The file or resource to use for default user-extentions.js.
+     * The file or resource to use for default user-extensions.js.
      *
-     * @parameter default-value="org/codehaus/mojo/selenium/default-user-extentions.js"
+     * @parameter default-value="org/codehaus/mojo/selenium/default-user-extensions.js"
      */
     String defaultUserExtensions
 
     /**
-     * Enable or disable default user-extentions.js
+     * Enable or disable default user-extensions.js
      *
      * @parameter default-value="true"
      */
     boolean defaultUserExtensionsEnabled
 
     /**
-     * Location of the user-extentions.js to load into the server.
+     * Location of the user-extensions.js to load into the server.
      * If defaultUserExtensionsEnabled is true, then this file will be appended to the defaults.
      *
      * @parameter
@@ -230,8 +230,8 @@ class StartServerMojo
                     arg(value: '-alwaysProxy')
                 }
                 
-                // Maybe configure user extentions
-                def file = createUserExtentionsFile()
+                // Maybe configure user extensions
+                def file = createUserExtensionsFile()
                 if (file) {
                     log.info("User extensions: $file")
                     arg(value: '-userExtensions')
@@ -283,9 +283,9 @@ class StartServerMojo
     }
 
     /**
-     * Create the user-extentions.js file to use, or null if it should not be installed.
+     * Create the user-extensions.js file to use, or null if it should not be installed.
      */
-    private File createUserExtentionsFile() {
+    private File createUserExtensionsFile() {
         if (!defaultUserExtensionsEnabled && userExtensions == null) {
             return null
         }
@@ -330,17 +330,17 @@ class StartServerMojo
             log.debug("Using defaults: $url")
 
             writer.println('//')
-            writer.println("// Default user extentions from: $url")
+            writer.println("// Default user extensions from: $url")
             writer.println('//')
             writer << url.openStream()
         }
 
         if (userExtensions) {
             def url = resolveResource(userExtensions)
-            log.debug("Using user extentions: $url")
+            log.debug("Using user extensions: $url")
 
             writer.println('//')
-            writer.println("// User extentions from: $url")
+            writer.println("// User extensions from: $url")
             writer.println('//')
             writer << url.openStream()
         }

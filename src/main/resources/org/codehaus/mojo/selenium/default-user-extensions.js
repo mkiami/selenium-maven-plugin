@@ -52,7 +52,7 @@ Selenium.prototype.removeCookie = function(text, path) {
 };
 
 //
-// Incorporated from user-extentions.js.sample from Selenium RC 0.8.1
+// Incorporated from user-extensions.js.sample from Selenium RC 0.8.1
 //
 
 // The following examples try to give an indication of how Selenium can be extended with javascript.
