@@ -124,13 +124,35 @@ class StartServerMojo
      * @parameter default-value="false"
      */
     boolean alwaysProxy
-
+    
+    /**
+     * Normally a fresh empty Firefox profile is created every time we launch.
+     * You can specify a directory to make us copy your profile directory instead.
+     *
+     * @parameter
+     */
+    File firefoxProfileTemplate
+    
+    /**
+     * Stops re-initialization and spawning of the browser between tests.
+     *
+     * @parameter default-value="false"
+     */
+    boolean browserSessionReuse
+    
     /**
      * The location of the file to read the display properties.
      *
      * @parameter default-value="${project.build.directory}/selenium/display.properties"
      */
     File displayPropertiesFile
+    
+    /**
+     * Sets the browser mode (e.g. "*iexplore" for all sessions, no matter what is passed to getNewBrowserSession).
+     *
+     * @parameter
+     */
+    String forcedBrowserMode
     
     //
     // Components
@@ -228,6 +250,23 @@ class StartServerMojo
                 
                 if (alwaysProxy) {
                     arg(value: '-alwaysProxy')
+                }
+                
+                if (firefoxProfileTemplate) {
+                    if (!firefoxProfileTemplate.exists()) {
+                        log.warn("Missing Firefox profile template directory: $firefoxProfileTemplate")
+                    }
+                    arg(value: '-firefoxProfileTemplate')
+                    arg(file: firefoxProfileTemplate)
+                }
+                
+                if (browserSessionReuse) {
+                    arg(value: '-browserSessionReuse')
+                }
+                
+                if (forcedBrowserMode) {
+                    arg(value: '-forcedBrowserMode')
+                    arg(value: forcedBrowserMode)
                 }
                 
                 // Maybe configure user extensions
