@@ -27,6 +27,7 @@ import com.thoughtworks.selenium.DefaultSelenium
  * Start the Selenium server.
  *
  * @goal start-server
+ * @since 1.0-beta-1
  *
  * @version $Id$
  */

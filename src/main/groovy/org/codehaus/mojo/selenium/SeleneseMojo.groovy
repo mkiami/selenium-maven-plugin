@@ -30,6 +30,7 @@ import org.openqa.selenium.server.htmlrunner.HTMLLauncher
  * Run a suite of HTML Selenese tests.
  *
  * @goal selenese
+ * @since 1.0-beta-2
  *
  * @version $Id$
  */

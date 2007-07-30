@@ -32,6 +32,7 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
  * </p>
  *
  * @goal xvfb
+ * @since 1.0-beta-2
  *
  * @version $Id$
  */

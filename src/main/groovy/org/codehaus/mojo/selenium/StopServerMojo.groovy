@@ -25,6 +25,7 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
  * Stop the Selenium server.
  *
  * @goal stop-server
+ * @since 1.0-beta-2
  *
  * @version $Id$
  */
