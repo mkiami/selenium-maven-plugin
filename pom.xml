@@ -33,6 +33,12 @@
     
     <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
     
+    <scm>
+        <connection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/selenium-maven-plugin</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/selenium-maven-plugin</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/selenium-maven-plugin</url>
+    </scm>
+    
     <prerequisites>
         <maven>2.0.5</maven>
     </prerequisites>
