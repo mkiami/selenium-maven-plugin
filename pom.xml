@@ -32,9 +32,11 @@
     <packaging>maven-plugin</packaging>
     
     <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
+    
     <prerequisites>
         <maven>2.0.5</maven>
     </prerequisites>
+    
     <inceptionYear>2006</inceptionYear>
     
     <description>
