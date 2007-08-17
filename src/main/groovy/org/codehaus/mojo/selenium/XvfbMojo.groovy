@@ -251,6 +251,9 @@ class XvfbMojo
         // TODO: Really need a way to check if this will execute or not first
         //
         
+        def cookie = createCookie()
+        log.debug("Using cookie: $cookie")
+        
         // Use xauth to configure authentication for the display using a generated cookie
         ant.exec(executable: xauthExecutable, failonerror: true) {
             env(key: 'XAUTHORITY', file: authenticationFile)
@@ -258,7 +261,7 @@ class XvfbMojo
             arg(value: 'add')
             arg(value: display)
             arg(value: xauthProtocol)
-            arg(value: createCookie())
+            arg(value: cookie)
             
             //
             // FIXME: This spits out junk to STDERR, not very nice... :-(
