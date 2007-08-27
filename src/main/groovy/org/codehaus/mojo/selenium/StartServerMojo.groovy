@@ -336,7 +336,7 @@ class StartServerMojo
             def url
             def file = new File(name)
             if (file.exists()) {
-                url = file.toURL()
+                url = file.toURI().toURL()
             }
             else {
                 try {
