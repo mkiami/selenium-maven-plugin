@@ -133,7 +133,7 @@ class XvfbMojo
     /**
      * Skip goal execution
      *
-     * @parameter expression="${maven.test.skip}" default-value="false";
+     * @parameter expression="${maven.test.skip}" default-value="false"
      */
     boolean skip
 

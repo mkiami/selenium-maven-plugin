@@ -158,7 +158,8 @@ class StartServerMojo
     /**
      * Allows the server startup to be skipped.
      *
-     * @parameter expression="${maven.test.skip}" default-value="false";
+     * @parameter expression="${maven.test.skip}" default-value="false"
+     * @since 1.0-beta-2
      */
     boolean skip
     

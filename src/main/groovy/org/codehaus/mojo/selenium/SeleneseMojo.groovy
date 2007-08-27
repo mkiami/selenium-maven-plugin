@@ -102,7 +102,7 @@ class SeleneseMojo
     /**
      * Allows the tests to be skipped.
      *
-     * @parameter expression="${maven.test.skip}" default-value="false";
+     * @parameter expression="${maven.test.skip}" default-value="false"
      */
     boolean skip
     
