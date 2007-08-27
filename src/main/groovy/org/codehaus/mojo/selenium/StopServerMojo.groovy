@@ -32,11 +32,23 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
 class StopServerMojo
     extends ServerMojoSupport
 {
+    /**
+     * Skip goal execution
+     *
+     * @parameter expression="${maven.test.skip}" default-value="false";
+     */
+    boolean skip
+    
     //
     // Mojo
     //
 
     void execute() {
+        if (skip) {
+            log.info('Skipping execution')
+            return
+        }
+        
         log.info('Stopping Selenium server...')
         
         def url = new URL("http://localhost:$port/selenium-server/driver/?cmd=shutDown")

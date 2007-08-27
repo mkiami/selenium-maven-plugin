@@ -99,6 +99,13 @@ class SeleneseMojo
      */
     boolean slowResources
     
+    /**
+     * Allows the tests to be skipped.
+     *
+     * @parameter expression="${maven.test.skip}" default-value="false";
+     */
+    boolean skip
+    
     //
     // Components
     //
@@ -115,6 +122,11 @@ class SeleneseMojo
     //
 
     void execute() {
+        if (skip) {
+            log.info('Skipping tests')
+            return
+        }
+        
         // Setup the default results file if not specified
         if (!results) {
             String options = (multiWindow ? 'multiWindow-' : '') + (slowResources ? 'slowResources-' : '')

@@ -129,12 +129,24 @@ class XvfbMojo
      * @parameter default-value="true"
      */
     boolean background
+    
+    /**
+     * Skip goal execution
+     *
+     * @parameter expression="${maven.test.skip}" default-value="false";
+     */
+    boolean skip
 
     //
     // Mojo
     //
 
     void execute() {
+        if (skip) {
+            log.info('Skipping execution')
+            return
+        }
+        
         log.info('Starting Xvfb...')
         
         // Figure out what the display number is, and generate the properties file

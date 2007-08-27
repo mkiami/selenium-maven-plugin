@@ -155,6 +155,13 @@ class StartServerMojo
      */
     String forcedBrowserMode
     
+    /**
+     * Allows the server startup to be skipped.
+     *
+     * @parameter expression="${maven.test.skip}" default-value="false";
+     */
+    boolean skip
+    
     //
     // Components
     //
@@ -171,6 +178,11 @@ class StartServerMojo
     //
 
     void execute() {
+        if (skip) {
+            log.info('Skipping startup')
+            return
+        }
+        
         log.info('Starting Selenium server...')
         
         ant.mkdir(dir: workingDirectory)
