@@ -233,17 +233,16 @@ class XvfbMojo
     private String createCookie() {
         def cookie
         
-        //
-        // FIXME: Probably a better way to make sure we don't get negative values...
-        //
-        
-        while (cookie < 0) {
-            byte[] bytes = new byte[16]
-            new Random().nextBytes(bytes)
-            cookie = new BigInteger(bytes)
+        byte[] bytes = new byte[16]
+        new Random().nextBytes(bytes)
+        cookie = new BigInteger(bytes)
+
+        String cookieHex = cookie.abs().toString(16)
+        int padding = 32 - cookieHex.length()
+        for (int i = 0; i < padding; i++) {
+            cookieHex = "0" + cookieHex
         }
-        
-        return cookie.toString(16)
+        return cookieHex
     }
     
     /**
