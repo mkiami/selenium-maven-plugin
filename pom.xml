@@ -28,15 +28,15 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>selenium-maven-plugin</artifactId>
     <name>Maven Selenium Plugin</name>
-    <version>1.0-beta-2-SNAPSHOT</version>
+    <version>1.0-beta-2</version>
     <packaging>maven-plugin</packaging>
     
     <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
     
     <scm>
-        <connection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/selenium-maven-plugin</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/selenium-maven-plugin</developerConnection>
-        <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/selenium-maven-plugin</url>
+        <connection>scm:svn:https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.0-beta-2</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.0-beta-2</developerConnection>
+        <url>https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.0-beta-2</url>
     </scm>
     
     <prerequisites>
