@@ -47,6 +47,13 @@
     
     <dependencies>
         <dependency>
+            <groupId>org.codehaus.mojo.groovy.runtime</groupId>
+            <artifactId>groovy-runtime-default</artifactId>
+            <version>1.0-beta-3-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
@@ -54,16 +61,9 @@
         </dependency>
         
         <dependency>
-            <groupId>groovy</groupId>
-            <artifactId>groovy-all</artifactId>
-            <version>1.0</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
             <groupId>org.openqa.selenium.client-drivers</groupId>
             <artifactId>selenium-java-client-driver</artifactId>
-            <version>0.9.2-SNAPSHOT</version>
+            <version>0.9.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -73,11 +73,18 @@
             <plugin>
                 <groupId>org.codehaus.mojo.groovy</groupId>
                 <artifactId>groovy-maven-plugin</artifactId>
-                <version>1.0-alpha-3</version>
+                <version>1.0-beta-3-SNAPSHOT</version>
+                
+                <configuration>
+                    <providerSelection>default</providerSelection>
+                </configuration>
                 
                 <executions>
                     <execution>
                         <goals>
+                            <goal>generateStubs</goal>
+                            <goal>compile</goal>
+                            <goal>generateTestStubs</goal>
                             <goal>testCompile</goal>
                         </goals>
                     </execution>
