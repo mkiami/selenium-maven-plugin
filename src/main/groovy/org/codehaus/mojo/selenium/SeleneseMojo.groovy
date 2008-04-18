@@ -19,7 +19,7 @@
 
 package org.codehaus.mojo.selenium
 
-import org.codehaus.mojo.groovy.GroovyMojoSupport
+import org.codehaus.groovy.maven.mojo.GroovyMojo
 
 import org.apache.maven.project.MavenProject
 
@@ -35,7 +35,7 @@ import org.openqa.selenium.server.htmlrunner.HTMLLauncher
  * @version $Id$
  */
 class SeleneseMojo
-    extends GroovyMojoSupport
+    extends GroovyMojo
 {
     /**
      * The suite file to run.

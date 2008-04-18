@@ -19,7 +19,7 @@
 
 package org.codehaus.mojo.selenium
 
-import org.codehaus.mojo.groovy.GroovyMojoSupport
+import org.codehaus.groovy.maven.mojo.GroovyMojo
 
 /**
  * Starts an Xvfb instance suitable for handling X11 displays for headless systems.
@@ -37,7 +37,7 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
  * @version $Id$
  */
 class XvfbMojo
-    extends GroovyMojoSupport
+    extends GroovyMojo
 {
     /**
      * The 'Xvfb' command to execute.

@@ -19,7 +19,7 @@
 
 package org.codehaus.mojo.selenium
 
-import org.codehaus.mojo.groovy.GroovyMojoSupport
+import org.codehaus.groovy.maven.mojo.GroovyMojo
 
 /**
  * Support for Selenium server mojos.
@@ -27,7 +27,7 @@ import org.codehaus.mojo.groovy.GroovyMojoSupport
  * @version $Id$
  */
 abstract class ServerMojoSupport
-    extends GroovyMojoSupport
+    extends GroovyMojo
 {
     /**
      * The port number of the server to connect to.
