@@ -22,9 +22,14 @@
 
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>org.codehaus.mojo.selenium.it</groupId>
+    <parent>
+        <groupId>org.codehaus.mojo.selenium.it</groupId>
+        <artifactId>common</artifactId>
+        <version>testing</version>
+        <relativePath>../common.xml</relativePath>
+    </parent>
+    
     <artifactId>selenese-1</artifactId>
-    <version>testing</version>
     
     <description>
         Verify that basic html-based testing works.
@@ -35,8 +40,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>selenium-maven-plugin</artifactId>
-                <version>testing</version>
-                
                 <executions>
                     <execution>
                         <phase>test</phase>

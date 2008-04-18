@@ -22,48 +22,35 @@
 
     <modelVersion>4.0.0</modelVersion>
     
-    <groupId>org.codehaus.mojo.selenium.it</groupId>
+    <parent>
+        <groupId>org.codehaus.mojo.selenium.it</groupId>
+        <artifactId>common</artifactId>
+        <version>testing</version>
+        <relativePath>../common.xml</relativePath>
+    </parent>
+    
     <artifactId>verify-browser</artifactId>
-    <version>testing</version>
     
     <description>
         Verify that browser validation is functional.
     </description>
     
-    <repositories>
-        <repository>
-            <id>openqa</id>
-            <name>OpenQA Repository</name>
-            <url>http://maven.openqa.org</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-    
     <dependencies>
-        <dependency>
-            <groupId>org.codehaus.mojo.groovy.runtime</groupId>
-            <artifactId>groovy-runtime-default</artifactId>
-            <version>1.0-beta-3-SNAPSHOT</version>
-            <scope>test</scope>
-        </dependency>
-        
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
             <scope>test</scope>
         </dependency>
         
         <dependency>
             <groupId>org.openqa.selenium.client-drivers</groupId>
             <artifactId>selenium-java-client-driver</artifactId>
-            <version>0.9.2</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.codehaus.groovy.maven.runtime</groupId>
+            <artifactId>gmaven-runtime-default</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -71,14 +58,8 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo.groovy</groupId>
-                <artifactId>groovy-maven-plugin</artifactId>
-                <version>1.0-beta-3-SNAPSHOT</version>
-                
-                <configuration>
-                    <providerSelection>default</providerSelection>
-                </configuration>
-                
+                <groupId>org.codehaus.groovy.maven</groupId>
+                <artifactId>gmaven-plugin</artifactId>
                 <executions>
                     <execution>
                         <goals>
@@ -94,8 +75,6 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>selenium-maven-plugin</artifactId>
-                <version>testing</version>
-                
                 <executions>
                     <execution>
                         <phase>pre-integration-test</phase>
@@ -113,13 +92,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.3</version>
-                
                 <configuration>
                     <!-- Skip the normal tests, we'll run them in the integration-test phase -->
                     <skip>true</skip>
                 </configuration>
-                
                 <executions>
                     <execution>
                         <phase>integration-test</phase>
