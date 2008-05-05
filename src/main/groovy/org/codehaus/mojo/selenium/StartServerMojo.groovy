@@ -22,6 +22,7 @@ package org.codehaus.mojo.selenium
 import org.apache.commons.lang.SystemUtils
 
 import com.thoughtworks.selenium.DefaultSelenium
+import org.codehaus.groovy.maven.mojo.support.ProcessLauncher
 
 /**
  * Start the Selenium server.
@@ -197,6 +198,8 @@ class StartServerMojo
             if (!artifact) {
                 fail("Unable to locate '$id' in the list of plugin artifacts")
             }
+            
+            log.info("Using plugin artifact: ${artifact.file}")
             
             return artifact.file
         }
