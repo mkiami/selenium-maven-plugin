@@ -144,28 +144,3 @@ mvn selenium:start-server
 mvn selenium:start-server -Ddebug=true
 +----------+
 
-* Running in mulitWindow mode
-
- Selenium has the ability to open 2 windows: one for displaying the Selenium tests and another one
- for displaying the Application Under Test (AUT). This is very useful for applications using
- Frames/IFrames, which otherwise cannot be tested. To enable the multiWindow mode use the following:
-
-+----------+
-<plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>selenium-maven-plugin</artifactId>
-    <executions>
-        <execution>
-            <phase>pre-integration-test</phase>
-            <goals>
-                <goal>start-server</goal>
-            </goals>
-            <configuration>
-                <multiWindow>true</multiWindow>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
-+----------+
-
- <<Note:>> by default, the <<<multiWindow>>> mode is off.
