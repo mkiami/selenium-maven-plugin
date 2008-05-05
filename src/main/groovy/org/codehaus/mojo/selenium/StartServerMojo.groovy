@@ -244,7 +244,7 @@ class StartServerMojo
                 fail("Unable to locate '$id' in the list of plugin artifacts")
             }
             
-            log.info("Using plugin artifact: ${artifact.file}")
+            log.debug("Using plugin artifact: ${artifact.file}")
             
             return artifact.file
         }
