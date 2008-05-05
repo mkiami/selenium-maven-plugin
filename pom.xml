@@ -79,9 +79,8 @@
             <name>Emmanuel Venisse</name>
             <email>evenisse@codehaus.org</email>
             <roles>
-                <role>Java Developer</role>
+                <role>Emeritus Developer</role>
             </roles>
-            <timezone>+1</timezone>
         </developer>
     </developers>
     
