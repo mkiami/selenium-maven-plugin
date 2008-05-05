@@ -28,10 +28,18 @@ import org.codehaus.groovy.maven.mojo.GroovyMojo
  * @since 1.0-beta-2
  *
  * @version $Id$
+ * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 class StopServerMojo
-    extends ServerMojoSupport
+    extends GroovyMojo
 {
+    /**
+     * The port number of the server to connect to.
+     *
+     * @parameter expression="${port}" default-value="4444"
+     */
+    int port
+    
     /**
      * Skip goal execution
      *

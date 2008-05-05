@@ -19,8 +19,8 @@
 
 package org.codehaus.mojo.selenium
 
+import org.codehaus.groovy.maven.mojo.GroovyMojo
 import org.apache.commons.lang.SystemUtils
-
 import com.thoughtworks.selenium.DefaultSelenium
 import org.codehaus.groovy.maven.mojo.support.ProcessLauncher
 
@@ -31,10 +31,18 @@ import org.codehaus.groovy.maven.mojo.support.ProcessLauncher
  * @since 1.0-beta-1
  *
  * @version $Id$
+ * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 class StartServerMojo
     extends ServerMojoSupport
 {
+    /**
+     * The port number of the server to connect to.
+     *
+     * @parameter expression="${port}" default-value="4444"
+     */
+    int port
+    
     /**
      * Timeout for the server in seconds.
      *
@@ -48,28 +56,6 @@ class StartServerMojo
      * @parameter expression="${debug}" default-value="false"
      */
     boolean debug
-    
-    /**
-     * The file or resource to use for default user-extensions.js.
-     *
-     * @parameter default-value="org/codehaus/mojo/selenium/default-user-extensions.js"
-     */
-    String defaultUserExtensions
-
-    /**
-     * Enable or disable default user-extensions.js
-     *
-     * @parameter default-value="true"
-     */
-    boolean defaultUserExtensionsEnabled
-
-    /**
-     * Location of the user-extensions.js to load into the server.
-     * If defaultUserExtensionsEnabled is true, then this file will be appended to the defaults.
-     *
-     * @parameter
-     */
-    String userExtensions
     
     /**
      * Working directory where Selenium server will be started from.
@@ -97,7 +83,7 @@ class StartServerMojo
     /**
      * Flag to control if we background the server or block Maven execution.
      *
-     * @parameter default-value="false"
+     * @parameter expression="${background}" default-value="false"
      * @required
      */
     boolean background
@@ -106,7 +92,7 @@ class StartServerMojo
      * Attempt to verify the named browser configuration.  Must be one of the
      * standard valid browser names (and must start with a *), e.g. *firefox, *iexplore, *custom.
      *
-     * @parameter
+     * @parameter expression="${verifyBrowser}"
      */
     String verifyBrowser
     
@@ -115,32 +101,98 @@ class StartServerMojo
      * is useful for applications using frames/iframes which otherwise cannot be tested as the
      * same window is used for displaying both the Selenium tests and the AUT.
      *
-     * @parameter default-value="false"
+     * @parameter expression="${multiWindow}" default-value="false"
+     * @since 1.0-beta-3
      */
     boolean multiWindow
+    
+    /**
+     * Sets the browser mode (e.g. "*iexplore" for all sessions).
+     *
+     * @parameter expression="${forcedBrowserMode}"
+     * @since 1.0-beta-3
+     */
+    String forcedBrowserMode
+    
+    /**
+     * Stops re-initialization and spawning of the browser between tests.
+     *
+     * @parameter expression="${browserSessionReuse}" default-value="false"
+     * @since 1.0-beta-3
+     */
+    boolean browserSessionReuse
+    
+    /**
+     * The file or resource to use for default user-extensions.js.
+     *
+     * @parameter default-value="org/codehaus/mojo/selenium/default-user-extensions.js"
+     */
+    String defaultUserExtensions
 
     /**
-     * Flag to control if we start Selenium RC in alwaysProxy mode or not. The alwaysProxy mode
-     * forces all browser traffic through the proxy.
+     * Enable or disable default user-extensions.js
      *
-     * @parameter default-value="false"
+     * @parameter default-value="true"
      */
-    boolean alwaysProxy
+    boolean defaultUserExtensionsEnabled
+
+    /**
+     * Location of the user-extensions.js to load into the server.
+     * If defaultUserExtensionsEnabled is true, then this file will be appended to the defaults.
+     *
+     * @parameter expression="${userExtensions}"
+     */
+    String userExtensions
+    
+    /**
+     * By default, we proxy every browser request; set this
+     * flag to make the browser use our proxy only for URLs containing
+     * '/selenium-server'
+     *
+     * @parameter expression="${avoidProxy}" default-value="false"
+     * @since 1.0-beta-3
+     */
+    boolean avoidProxy
     
     /**
      * Normally a fresh empty Firefox profile is created every time we launch.
      * You can specify a directory to make us copy your profile directory instead.
      *
-     * @parameter
+     * @parameter expression="${firefoxProfileTemplate}"
      */
     File firefoxProfileTemplate
     
     /**
-     * Stops re-initialization and spawning of the browser between tests.
+     * Enables logging on the browser side; logging
+     * messages will be transmitted to the server.  This can affect
+     * performance.
      *
-     * @parameter default-value="false"
+     * @parameter expression="${browserSideLog}" defalut-value="false"
+     * @since 1.0-beta-3
      */
-    boolean browserSessionReuse
+    boolean browserSideLog
+    
+    /**
+     * If the browser does not have user profiles,
+     * make sure every new session has no artifacts from previous
+     * sessions.  For example, enabling this option will cause all user
+     * cookies to be archived before launching IE, and restored after IE
+     * is closed.
+     *
+     * @parameter expression="${ensureCleanSession}" default-value="false"
+     * @since 1.0-beta-3
+     */
+    boolean ensureCleanSession
+    
+    /**
+     * Forces the Selenium proxy to trust all
+     * SSL certificates.  This doesn't work in browsers that don't use the
+     * Selenium proxy.
+     *
+     * @parameter expression="${trustAllSSLCertificates}" default-value="false"
+     * @since 1.0-beta-3
+     */
+    boolean trustAllSSLCertificates
     
     /**
      * The location of the file to read the display properties.
@@ -148,13 +200,6 @@ class StartServerMojo
      * @parameter default-value="${project.build.directory}/selenium/display.properties"
      */
     File displayPropertiesFile
-    
-    /**
-     * Sets the browser mode (e.g. "*iexplore" for all sessions, no matter what is passed to getNewBrowserSession).
-     *
-     * @parameter
-     */
-    String forcedBrowserMode
     
     /**
      * Allows the server startup to be skipped.
@@ -252,38 +297,51 @@ class StartServerMojo
                 arg(value: '-port')
                 arg(value: "$port")
                 
-                if (debug) {
-                    arg(value: '-debug')
-                }
-                
                 if (timeout > 0) {
                     arg(value: '-timeout')
                     arg(value: "$timeout")
                 }
                 
-                if (multiWindow) {
-                    arg(value: '-multiwindow')
+                if (debug) {
+                    arg(value: '-debug')
                 }
                 
-                if (alwaysProxy) {
-                    arg(value: '-alwaysProxy')
+                if (multiWindow) {
+                    arg(value: '-multiWindow')
+                }
+                
+                if (forcedBrowserMode) {
+                    arg(value: '-forcedBrowserMode')
+                    arg(value: forcedBrowserMode)
+                }
+                
+                if (avoidProxy) {
+                    arg(value: '-avoidProxy')
+                }
+                
+                if (browserSideLog) {
+                    arg(value: '-browserSideLog')
+                }
+                
+                if (ensureCleanSession) {
+                    arg(value: '-ensureCleanSession')
+                }
+                
+                if (trustAllSSLCertificates) {
+                    arg(value: '-trustAllSSLCertificates')
                 }
                 
                 if (firefoxProfileTemplate) {
                     if (!firefoxProfileTemplate.exists()) {
                         log.warn("Missing Firefox profile template directory: $firefoxProfileTemplate")
                     }
+                    
                     arg(value: '-firefoxProfileTemplate')
                     arg(file: firefoxProfileTemplate)
                 }
                 
                 if (browserSessionReuse) {
                     arg(value: '-browserSessionReuse')
-                }
-                
-                if (forcedBrowserMode) {
-                    arg(value: '-forcedBrowserMode')
-                    arg(value: forcedBrowserMode)
                 }
                 
                 // Maybe configure user extensions

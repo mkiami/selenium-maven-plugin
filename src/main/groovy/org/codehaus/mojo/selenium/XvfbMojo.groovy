@@ -36,6 +36,7 @@ import org.codehaus.groovy.maven.mojo.support.ProcessLauncher
  * @since 1.0-beta-2
  *
  * @version $Id$
+ * @author <a href="mailto:jason@planet57.com">Jason Dillon</a>
  */
 class XvfbMojo
     extends GroovyMojo
