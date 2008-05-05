@@ -202,6 +202,22 @@ class StartServerMojo
     File displayPropertiesFile
     
     /**
+     * The location of the SSL trust-store.
+     *
+     * @parameter expression="${trustStore}"
+     * @since 1.0-beta-3
+     */
+    File trustStore
+    
+    /**
+     * The password for the SSL trust-store.
+     *
+     * @parameter expression="${trustStorePassword}"
+     * @since 1.0-beta-3
+     */
+    String trustStorePassword
+    
+    /**
      * Allows the server startup to be skipped.
      *
      * @parameter expression="${maven.test.skip}" default-value="false"
@@ -350,6 +366,18 @@ class StartServerMojo
                     log.info("User extensions: $file")
                     arg(value: '-userExtensions')
                     arg(file: file)
+                }
+                
+                if (trustStore) {
+                    if (!trustStore.exists()) {
+                        log.warn("Missing SSL trust-store: $trustStore")
+                    }
+                    
+                    sysproperty(key: 'javax.net.ssl.trustStore', file: trustStore)
+                }
+                
+                if (trustStorePassword) {
+                    sysproperty(key: 'javax.net.ssl.trustStorePassword', value: trustStorePassword)
                 }
             }
         }
