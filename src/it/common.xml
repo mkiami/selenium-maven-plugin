@@ -98,6 +98,16 @@
                     <groupId>org.codehaus.groovy.maven</groupId>
                     <artifactId>gmaven-plugin</artifactId>
                     <version>1.0-rc-1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>generateStubs</goal>
+                                <goal>compile</goal>
+                                <goal>generateTestStubs</goal>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 
                 <plugin>
@@ -118,7 +128,20 @@
                     <version>2.4.2</version>
                     <configuration>
                         <redirectTestOutputToFile>true</redirectTestOutputToFile>
+                        <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+                        <skip>true</skip>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <phase>integration-test</phase>
+                            <goals>
+                                <goal>test</goal>
+                            </goals>
+                            <configuration>
+                                <skip>false</skip>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
 
                 <plugin>
