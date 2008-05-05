@@ -29,10 +29,10 @@
         <relativePath>../common.xml</relativePath>
     </parent>
     
-    <artifactId>browserSessionReuse</artifactId>
+    <artifactId>change-port</artifactId>
     
     <description>
-        Verify that browserSessionReuse functions.
+        Verify that changing the port functions.
     </description>
     
     <build>
@@ -54,7 +54,7 @@
                         </goals>
                         <configuration>
                             <background>true</background>
-                            <browserSessionReuse>true</browserSessionReuse>
+                            <port>4000</port>
                         </configuration>
                     </execution>
                     
@@ -64,6 +64,9 @@
                         <goals>
                             <goal>stop-server</goal>
                         </goals>
+                        <configuration>
+                            <port>4000</port>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

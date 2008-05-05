@@ -35,26 +35,6 @@
         Verify that browser validation is functional.
     </description>
     
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.openqa.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.codehaus.groovy.maven.runtime</groupId>
-            <artifactId>gmaven-runtime-default</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-    
     <build>
         <plugins>
             <plugin>
