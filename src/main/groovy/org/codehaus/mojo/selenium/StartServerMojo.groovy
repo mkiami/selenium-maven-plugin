@@ -246,8 +246,6 @@ class StartServerMojo
             return
         }
         
-        log.info('Starting Selenium server...')
-        
         ant.mkdir(dir: workingDirectory)
         
         if (logOutput) {
