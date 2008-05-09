@@ -29,7 +29,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>selenium-maven-plugin</artifactId>
     <name>Maven Selenium Plugin</name>
-    <version>1.0-beta-4-SNAPSHOT</version>
+    <version>1.0-rc-1-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     
     <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
