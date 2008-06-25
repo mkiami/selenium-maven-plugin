@@ -103,3 +103,24 @@ chmod u+s `which Xvfb`
 </plugins>
 +----------+
 
+ You may get an error like this in <<<target/selenium/xvfb.log>>> when you try to start Xvfb
+
++----------+
+ Fatal server error:
+ PAM authentication failed, cannot start X server.
+        Perhaps you do not have console ownership?
++----------+
+
+ From {{{https://lists.sdsc.edu/pipermail/npaci-rocks-discussion/2004-December/008837.html}the sdsc.edu mailing list}}
+
+ To allow users to start an xserver you need to modify /etc/pam.d/xserver and make it look something like this:
+
++----------+
+#%PAM-1.0
+auth       sufficient   /lib/security/pam_rootok.so
+#auth       required    /lib/security/pam_console.so
+auth       required     /lib/security/pam_permit.so
+account    required     /lib/security/pam_permit.so
++----------+
+
+ This will permit authorization for users not at the console to start an X-server. Note: you may not have full pathnames in your file and that is okay.
