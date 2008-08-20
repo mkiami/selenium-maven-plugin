@@ -8,18 +8,6 @@ Simply run Maven ;-)
     mvn install
 
 
-IDE Configuration
-=================
-
-To generate IDEA configuration w/sources & javadocs:
-
-    mvn -Pidea
-
-Or the basic configuration:
-
-    mvn idea:idea
-
-
 Site Generation
 ===============
 
