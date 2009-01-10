@@ -50,7 +50,5 @@
             <item name="Headless X11 with Xvfb" href="examples/headless-with-xvfb.html"/>
         </menu>
         
-        ${reports}
-
     </body>
 </project>
