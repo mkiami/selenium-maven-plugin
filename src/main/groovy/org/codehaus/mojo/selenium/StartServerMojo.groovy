@@ -97,14 +97,13 @@ class StartServerMojo
     String verifyBrowser
     
     /**
-     * Flag to control if we start Selenium RC in multiWindow mode or not. The multiWindow mode
-     * is useful for applications using frames/iframes which otherwise cannot be tested as the
-     * same window is used for displaying both the Selenium tests and the AUT.
+     * Puts you into a mode where the test web site executes in a frame. This mode should only be
+     * selected if the application under test does not use frames.
      *
-     * @parameter expression="${multiWindow}" default-value="false"
-     * @since 1.0-beta-3
+     * @parameter expression="${singleWindow}" default-value="false"
+     * @since 1.0-rc-1
      */
-    boolean multiWindow
+    boolean singleWindow
     
     /**
      * Sets the browser mode (e.g. "*iexplore" for all sessions).
@@ -320,8 +319,8 @@ class StartServerMojo
                     arg(value: '-debug')
                 }
                 
-                if (multiWindow) {
-                    arg(value: '-multiWindow')
+                if (singleWindow) {
+                    arg(value: '-singleWindow')
                 }
                 
                 if (forcedBrowserMode) {
