@@ -237,7 +237,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>2.0-beta-7</version>
+                    <version>2.0-beta-8</version>
                 </plugin>
                 
                 <plugin>
@@ -276,7 +276,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.4</version>
+                    <version>2.5</version>
                     <configuration>
                         <source>1.4</source>
                     </configuration>
@@ -285,7 +285,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>shitty-maven-plugin</artifactId>
-                    <version>1.0-alpha-3-SNAPSHOT</version>
+                    <version>1.0-alpha-3</version>
                 </plugin>
                 
                 <plugin>
@@ -472,28 +472,127 @@
                 </plugins>
             </build>
         </profile>
-       	
+        
+        <profile>
+            <id>release</id>
+
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <configuration>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <useReleaseProfile>false</useReleaseProfile>
+                            <arguments>-Drelease</arguments>
+                            <!--
+                            NOTE: The integration tests currently require install (when we should use verify),
+                                  due to a bug in the shitty plugin.
+                            
+                            <preparationGoals>clean verify -Dit</preparationGoals>
+                            -->
+                            <preparationGoals>clean install -Dit</preparationGoals>
+                            <goals>deploy</goals>
+                        </configuration>
+                    </plugin>
+                    
+                    <!--
+                    FIXME: Need to get this setup.
+                    
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <inherited>true</inherited>
+                        <configuration>
+                            <passphrase>${gpg.passphrase}</passphrase>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    -->
+                    
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <configuration>
+                            <updateReleaseInfo>true</updateReleaseInfo>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
+        <profile>
+            <id>distribution</id>
+            
+            <activation>
+                <property>
+                    <name>release</name>
+                </property>
+            </activation>
+            
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>javadoc</goal>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        
         <profile>
             <id>stage-distribution</id>
             
             <activation>
                 <property>
-                    <name>stageDistributionUrl</name>
+                    <name>stage.distributionUrl</name>
                 </property>
             </activation>
             
             <distributionManagement>
                 <repository>
                     <id>stage-repository</id>
-                    <url>${stageDistributionUrl}/repository</url>
+                    <url>${stage.distributionUrl}/repository</url>
                 </repository>
                 <snapshotRepository>
                     <id>stage-snapshot-repository</id>
-                    <url>${stageDistributionUrl}/snapshot-repository</url>
+                    <url>${stage.distributionUrl}/snapshot-repository</url>
                 </snapshotRepository>
                 <site>
                     <id>stage-site</id>
-                    <url>${stageDistributionUrl}/site</url>
+                    <url>${stage.distributionUrl}/site</url>
                 </site>
             </distributionManagement>
         </profile>
