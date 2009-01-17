@@ -42,7 +42,7 @@
     </scm>
     
     <prerequisites>
-        <maven>2.0.5</maven>
+        <maven>2.0.9</maven>
     </prerequisites>
     
     <inceptionYear>2006</inceptionYear>
@@ -135,19 +135,19 @@
         <dependency>
             <groupId>org.codehaus.groovy.maven</groupId>
             <artifactId>gmaven-mojo</artifactId>
-            <version>1.0-rc-3</version>
+            <version>1.0-rc-4</version>
         </dependency>
         
         <dependency>
             <groupId>org.codehaus.groovy.maven</groupId>
             <artifactId>gmaven-mojo-support</artifactId>
-            <version>1.0-rc-3</version>
+            <version>1.0-rc-4</version>
         </dependency>
         
         <dependency>
             <groupId>org.codehaus.groovy.maven</groupId>
             <artifactId>gmaven-common</artifactId>
-            <version>1.0-rc-3</version>
+            <version>1.0-rc-4</version>
         </dependency>
         
         <dependency>
@@ -219,7 +219,7 @@
                 <plugin>
                     <groupId>org.codehaus.groovy.maven</groupId>
                     <artifactId>gmaven-plugin</artifactId>
-                    <version>1.0-rc-3</version>
+                    <version>1.0-rc-4</version>
                 </plugin>
                 
                 <plugin>
