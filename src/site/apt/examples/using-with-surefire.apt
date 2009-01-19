@@ -28,7 +28,7 @@ Using With Surefire
 * Simple Test
 
  Below is a very simple test which shows how to use the 
- {{{http://www.openqa.org/selenium-rc/java.html}Selenium Java Client Driver}}.
+ {{{http://seleniumhq.org/projects/remote-control/languages/java.html}Selenium Java Client Driver}}.
  
  <<NOTE:>>
  This is a normal JUnit-style test, though you may want to use JUnit-4

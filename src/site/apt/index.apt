@@ -25,14 +25,14 @@
 
 Selenium Maven Plugin
 
- Provides support for using {{{http://selenium.openqa.org/}Selenium}} with Maven 2.
+ Provides support for using {{{http://seleniumhq.org/}Selenium}} with Maven 2.
  
- Use this plugin to start a Selenium {{{http://selenium-rc.openqa.org/}Remote Control}}
+ Use this plugin to start a Selenium {{{http://seleniumhq.org/projects/remote-control/}Remote Control}}
  server to support automated web-application testing.
  
  This plugin is intended to support usage of the
- {{{http://selenium-rc.openqa.org/java.html}Selenium Java Client Driver}}
- when running <regular Surefire tests>.  Use {{{http://selenium-ide.openqa.org/}Selenium IDE}}
+ {{{http://seleniumhq.org/projects/remote-control/languages/java.html}Selenium Java Client Driver}}
+ when running <regular Surefire tests>.  Use {{{http://seleniumhq.org/projects/ide/}Selenium IDE}}
  to help generate the initial Java code for the tests, and then augment as needed.
 
 * Goals Overview
