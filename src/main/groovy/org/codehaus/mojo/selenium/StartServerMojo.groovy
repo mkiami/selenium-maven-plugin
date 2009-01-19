@@ -215,7 +215,31 @@ class StartServerMojo
      * @since 1.0-beta-3
      */
     String trustStorePassword
-    
+
+    /**
+     * Configure the Selenium Server to use <tt>http.proxyPort</tt>.
+     *
+     * @parameter expression="${proxyPort}"
+     * @since 1.0-rc-2
+     */
+    String proxyPort
+
+    /**
+     * Configure the Selenium Server to use <tt>http.proxyHost</tt>.
+     *
+     * @parameter expression="${proxyHost}"
+     * @since 1.0-rc-2
+     */
+    String proxyHost
+
+    /**
+     * Configure the Selenium Server to use <tt>http.nonProxyHosts</tt>.
+     *
+     * @parameter expression="${nonProxyHosts}"
+     * @since 1.0-rc-2
+     */
+    String nonProxyHosts
+
     /**
      * Allows the server startup to be skipped.
      *
@@ -375,6 +399,18 @@ class StartServerMojo
                 
                 if (trustStorePassword) {
                     sysproperty(key: 'javax.net.ssl.trustStorePassword', value: trustStorePassword)
+                }
+
+                if (proxyHost) {
+                    sysproperty(key: 'http.proxyHost', value: proxyHost)
+                }
+
+                if (proxyPort) {
+                    sysproperty(key: 'http.proxyPort', value: proxyPort)
+                }
+
+                if (nonProxyHosts) {
+                    sysproperty(key: 'http.nonProxyHosts', value: nonProxyHosts)
                 }
             }
         }
