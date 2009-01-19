@@ -24,6 +24,7 @@ import org.codehaus.groovy.maven.mojo.GroovyMojo
 import org.apache.maven.project.MavenProject
 
 import org.openqa.selenium.server.SeleniumServer
+import org.openqa.selenium.server.RemoteControlConfiguration
 import org.openqa.selenium.server.htmlrunner.HTMLLauncher
 
 /**
@@ -63,6 +64,8 @@ class SeleneseMojo
      * @required
      */
     URL startURL
+
+    // TODO: ^^ Rename to browserURL to match HTMLLauncher?
     
     /**
      * The file to which we'll write out our test results.
@@ -137,8 +140,14 @@ class SeleneseMojo
         }
         
         ant.mkdir(dir: results.parentFile)
-        
-        def server = new SeleniumServer(port, slowResources, multiWindow)
+
+        // TODO: Expose all of the properties in vvv for configuration?
+
+        def conf = new RemoteControlConfiguration()
+        conf.port = port
+        conf.multiWindow = multiWindow
+
+        def server = new SeleniumServer(slowResources, conf)
         server.start()
         
         def result = 'FAILED'
