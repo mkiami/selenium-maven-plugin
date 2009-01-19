@@ -123,4 +123,5 @@ auth       required     /lib/security/pam_permit.so
 account    required     /lib/security/pam_permit.so
 +----------+
 
- This will permit authorization for users not at the console to start an X-server. Note: you may not have full pathnames in your file and that is okay.
+ This will permit authorization for users not at the console to start an X-server.
+
