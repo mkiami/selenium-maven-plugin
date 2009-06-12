@@ -145,7 +145,7 @@ class SeleneseMojo
 
         def conf = new RemoteControlConfiguration()
         conf.port = port
-        conf.multiWindow = multiWindow
+        conf.singleWindow = !multiWindow
 
         def server = new SeleniumServer(slowResources, conf)
         server.start()
