@@ -30,7 +30,7 @@
     
     <artifactId>selenium-maven-plugin</artifactId>
     <name>Maven Selenium Plugin</name>
-    <version>1.0-rc-2-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
     
     <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
