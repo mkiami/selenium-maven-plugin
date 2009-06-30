@@ -84,7 +84,8 @@
             </roles>
         </developer>
     </developers>
-    
+
+<!--
     <repositories>
         <repository>
             <id>openqa-releases</id>
@@ -113,7 +114,8 @@
             </releases>
         </repository>
     </repositories>
-    
+-->
+
     <dependencies>
         <dependency>
             <groupId>org.codehaus.groovy.maven</groupId>
