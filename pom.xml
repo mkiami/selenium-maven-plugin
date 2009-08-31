@@ -365,11 +365,11 @@
     
     <profiles>
         <profile>
-            <id>integration-tests</id>
+            <id>run-its</id>
             
             <activation>
                 <property>
-                    <name>it</name>
+                    <name>!maven.test.skip</name>
                 </property>
             </activation>
             
