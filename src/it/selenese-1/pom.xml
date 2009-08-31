@@ -40,6 +40,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>selenium-maven-plugin</artifactId>
+                <version>@project.version@</version>
                 <executions>
                     <execution>
                         <phase>test</phase>

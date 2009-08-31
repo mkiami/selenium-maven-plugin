@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>mojo-parent</artifactId>
-        <version>19</version>
+        <version>21</version>
     </parent>
     
     <artifactId>selenium-maven-plugin</artifactId>
@@ -209,37 +209,6 @@
                 
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-plugin-plugin</artifactId>
-                    <version>2.4.1</version>
-                </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.0.2</version>
-                </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.0-beta-9</version>
-                    <configuration>
-                        <autoVersionSubmodules>true</autoVersionSubmodules>
-                        <useReleaseProfile>false</useReleaseProfile>
-                        <arguments>-Drelease</arguments>
-                        <!--
-                        NOTE: The integration tests currently require install (when we should use verify),
-                              due to a bug in the shitty plugin.
-                        
-                        <preparationGoals>clean verify -Dit</preparationGoals>
-                        -->
-                        <preparationGoals>clean install -Dit</preparationGoals>
-                        <goals>deploy</goals>
-                    </configuration>
-                </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-remote-resources-plugin</artifactId>
                     <version>1.0</version>
                     <executions>
@@ -265,27 +234,6 @@
                     </configuration>
                 </plugin>
 
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-install-plugin</artifactId>
-                    <version>2.2</version>
-                </plugin>
-                
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>2.5</version>
-                    <configuration>
-                        <source>1.4</source>
-                    </configuration>
-                </plugin>
-                
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>shitty-maven-plugin</artifactId>
-                    <version>1.0-alpha-3</version>
-                </plugin>
-                
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-docck-plugin</artifactId>
@@ -326,15 +274,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.4</source>
-                    <target>1.4</target>
-                </configuration>
             </plugin>
 
             <!--
@@ -437,53 +376,32 @@
             
             <build>
                 <plugins>
-                  <!-- Avoid issues with the testing plugin and recent versions of Maven until they are resolved -->
-                  <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>1.0-beta-1</version>
-                    <executions>
-                      <execution>
-                        <id>enforce-java</id>
-                        <goals>
-                          <goal>enforce</goal>
-                        </goals>
-                        <configuration>
-                          <rules>
-                            <requireMavenVersion>
-                              <version>(,2.1.0)</version>
-                            </requireMavenVersion>
-                          </rules>    
-                        </configuration>
-                      </execution>
-                    </executions>
-                  </plugin>
                     <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>shitty-maven-plugin</artifactId>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-invoker-plugin</artifactId>
                         <executions>
                             <execution>
                                 <goals>
-                                    <goal>clean</goal>
                                     <goal>install</goal>
-                                    <goal>test</goal>
+                                    <goal>run</goal>
                                 </goals>
                                 <configuration>
-                                    <projects>
-                                        <fileset>
-                                            <directory>src/it</directory>
-                                            <includes>
-                                                <include>*/pom.xml</include>
-                                            </includes>
-                                            <excludes>
-                                                <!-- Disable the selenese tests for now, they don't really work -->
-                                                <exclude>selenese*/pom.xml</exclude>
-                                                
-                                                <!-- Disable the Xvfb tests, as they are not very portable -->
-                                                <exclude>xvfb*/pom.xml</exclude>
-                                            </excludes>
-                                        </fileset>
-                                    </projects>
+                                    <goals>
+                                      <goal>clean</goal>
+                                      <goal>verify</goal>
+                                    </goals>
+                                    <cloneAllFiles>true</cloneAllFiles>
+                                    <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
+                                    <pomExcludes>
+                                        <!-- disabled because it doesn't close down -->
+                                        <pomExcludes>browserSessionReuse*/pom.xml</pomExcludes>
+                                        
+                                        <!-- Disable the selenese tests for now, they don't really work -->
+                                        <pomExclude>selenese*/pom.xml</pomExclude>
+
+                                        <!-- Disable the Xvfb tests, as they are not very portable -->
+                                        <pomExclude>xvfb*/pom.xml</pomExclude>
+                                    </pomExcludes>
                                 </configuration>
                             </execution>
                         </executions>
