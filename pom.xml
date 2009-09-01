@@ -371,6 +371,9 @@
                 <property>
                     <name>!maven.test.skip</name>
                 </property>
+                <os>
+                    <family>windows</family>
+                </os>
             </activation>
             
             <build>
