@@ -59,7 +59,7 @@ class StopServerMojo
         
         println('Stopping Selenium server...')
         
-        def url = new URL("http://localhost:$port/selenium-server/driver/?cmd=shutDown")
+        def url = new URL("http://localhost:$port/selenium-server/driver/?cmd=shutDownSeleniumServer")
         
         log.debug("Stop request URL: $url")
         
