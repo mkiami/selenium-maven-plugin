@@ -25,7 +25,7 @@
     <parent>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>mojo-parent</artifactId>
-        <version>21</version>
+        <version>23</version>
     </parent>
     
     <artifactId>selenium-maven-plugin</artifactId>
