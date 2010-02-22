@@ -520,6 +520,6 @@
     </profiles>
 
   <properties>
-    <selenium.version>1.0.1</selenium.version>
+    <selenium.version>1.0.2</selenium.version>
   </properties>
 </project>
