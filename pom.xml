@@ -404,6 +404,9 @@
                                         <!-- Disable the Xvfb tests, as they are not very portable -->
                                         <pomExclude>xvfb*/pom.xml</pomExclude>
                                     </pomExcludes>
+                                    <properties>
+                                      <selenium.version>${selenium.version}</selenium.version>
+                                    </properties>
                                 </configuration>
                             </execution>
                         </executions>
