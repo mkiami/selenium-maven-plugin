@@ -351,6 +351,8 @@
                     <!-- Disable the Xvfb tests, as they are not very portable -->
                     <pomExclude>xvfb*/pom.xml</pomExclude>
                   </pomExcludes>
+                  <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
+                  <settingsFile>src/it/settings.xml</settingsFile>
                   <properties>
                     <selenium-client.version>${selenium-client.version}</selenium-client.version>
                     <gmaven.version>${gmaven.version}</gmaven.version>
