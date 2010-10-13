@@ -139,6 +139,15 @@ class XvfbMojo
      */
     boolean skip
 
+    /**
+     * Reuse Xvfb process
+     * 
+     * @parameter expression="${reuse}" default-value="false"
+     */
+    boolean reuse
+
+    static final String DISPLAY_FILE_PROP = "org.codehaus.mojo.selenium.xvfb.displayFile"
+
     //
     // Mojo
     //
@@ -149,6 +158,15 @@ class XvfbMojo
             return
         }
         
+        def savedDisplayPropertiesFile = System.getProperty(DISPLAY_FILE_PROP)
+        if (savedDisplayPropertiesFile != null) {
+            log.info('Using existing Xvfb...')
+            if (!savedDisplayPropertiesFile.equals(displayPropertiesFile.getAbsolutePath())) {
+                ant.copy(file: savedDisplayPropertiesFile, tofile: displayPropertiesFile)
+            }
+            return
+        }
+
         log.info('Starting Xvfb...')
         
         // Figure out what the display number is, and generate the properties file
@@ -208,7 +226,11 @@ class XvfbMojo
         }
         
         launcher.verifier = {
-            return isDisplayInUse(display)
+            def success = isDisplayInUse(display)
+            if (success && reuse) {
+                System.setProperty(DISPLAY_FILE_PROP, displayPropertiesFile.getAbsolutePath())
+            }
+            return success
         }
         
         launcher.launch()
@@ -307,7 +329,7 @@ class XvfbMojo
             }
         }
         
-        fail("Count not find a usable display")
+        fail("Could not find a usable display")
     }
     
     /**
@@ -338,10 +360,12 @@ class XvfbMojo
         
         try {
             def socket = new Socket('localhost', port)
+            socket.close()
             return true
         }
         catch (ConnectException e) {
             return false
         }
     }
+
 }
