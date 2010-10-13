@@ -86,12 +86,6 @@
     </developer>
   </developers>
 
-  <!-- <repositories> <repository> <id>openqa-releases</id> <name>Openqa Release Repository</name> <url>http://nexus.openqa.org/content/repositories/releases</url> 
-    <layout>default</layout> <snapshots> <enabled>false</enabled> </snapshots> <releases> <enabled>true</enabled> </releases> 
-    </repository> <repository> <id>openqa-snapshots</id> <name>Openqa Snapshot Repository</name> <url>http://nexus.openqa.org/content/repositories/snapshots</url> 
-    <layout>default</layout> <snapshots> <enabled>true</enabled> <updatePolicy>daily</updatePolicy> <checksumPolicy>ignore</checksumPolicy> 
-    </snapshots> <releases> <enabled>false</enabled> </releases> </repository> </repositories> -->
-
   <dependencies>
     <dependency>
       <groupId>org.codehaus.gmaven</groupId>
@@ -194,7 +188,6 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.4.2</version>
           <configuration>
             <redirectTestOutputToFile>true</redirectTestOutputToFile>
           </configuration>
@@ -257,7 +250,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.4</version>
         <configuration>
           <quiet>true</quiet>
           <links>
@@ -308,11 +300,6 @@
         </configuration>
       </plugin>
 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.2</version>
-      </plugin>
     </plugins>
   </reporting>
 
@@ -370,95 +357,6 @@
       </build>
     </profile>
 
-    <profile>
-      <id>release</id>
-
-      <activation>
-        <property>
-          <name>release</name>
-        </property>
-      </activation>
-
-      <build>
-        <plugins>
-          <!-- FIXME: Need to get this setup. <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-gpg-plugin</artifactId> 
-            <inherited>true</inherited> <configuration> <passphrase>${gpg.passphrase}</passphrase> </configuration> <executions> <execution> 
-            <goals> <goal>sign</goal> </goals> </execution> </executions> </plugin> -->
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-deploy-plugin</artifactId>
-            <configuration>
-              <updateReleaseInfo>true</updateReleaseInfo>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>distribution</id>
-
-      <activation>
-        <property>
-          <name>release</name>
-        </property>
-      </activation>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-javadoc-plugin</artifactId>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>javadoc</goal>
-                  <goal>jar</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>stage-distribution</id>
-
-      <activation>
-        <property>
-          <name>stage.distributionUrl</name>
-        </property>
-      </activation>
-
-      <distributionManagement>
-        <repository>
-          <id>stage-repository</id>
-          <url>${stage.distributionUrl}/repository</url>
-        </repository>
-        <snapshotRepository>
-          <id>stage-snapshot-repository</id>
-          <url>${stage.distributionUrl}/snapshot-repository</url>
-        </snapshotRepository>
-        <site>
-          <id>stage-site</id>
-          <url>${stage.distributionUrl}/site</url>
-        </site>
-      </distributionManagement>
-    </profile>
   </profiles>
 
   <properties>
