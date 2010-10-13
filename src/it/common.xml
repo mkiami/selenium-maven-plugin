@@ -35,15 +35,15 @@
             </dependency>
             
             <dependency>
-                <groupId>org.codehaus.groovy.maven.runtime</groupId>
-                <artifactId>gmaven-runtime-default</artifactId>
-                <version>1.0-rc-1</version>
+               <groupId>org.codehaus.groovy</groupId>
+               <artifactId>groovy-all</artifactId>
+               <version>${groovy.version}</version>
             </dependency>
             
             <dependency>
                 <groupId>org.seleniumhq.selenium.client-drivers</groupId>
                 <artifactId>selenium-java-client-driver</artifactId>
-                <version>${selenium.version}</version>
+                <version>${selenium-client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -62,8 +62,8 @@
         </dependency>
         
         <dependency>
-            <groupId>org.codehaus.groovy.maven.runtime</groupId>
-            <artifactId>gmaven-runtime-default</artifactId>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -72,9 +72,9 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                    <groupId>org.codehaus.groovy.maven</groupId>
+                    <groupId>org.codehaus.gmaven</groupId>
                     <artifactId>gmaven-plugin</artifactId>
-                    <version>1.0-rc-1</version>
+                    <version>${gmaven.version}</version>
                     <executions>
                         <execution>
                             <goals>

@@ -19,7 +19,7 @@
 
 package org.codehaus.mojo.selenium
 
-import org.codehaus.groovy.maven.mojo.GroovyMojo
+import org.codehaus.gmaven.mojo.GroovyMojo
 
 /**
  * Stop the Selenium server.

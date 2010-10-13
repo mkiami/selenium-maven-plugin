@@ -19,8 +19,8 @@
 
 package org.codehaus.mojo.selenium
 
-import org.codehaus.groovy.maven.mojo.GroovyMojo
-import org.codehaus.groovy.maven.mojo.support.ProcessLauncher
+import org.codehaus.gmaven.mojo.GroovyMojo
+import org.codehaus.gmaven.mojo.support.ProcessLauncher
 
 /**
  * Starts an Xvfb instance suitable for handling X11 displays for headless systems.
