@@ -142,7 +142,8 @@ class XvfbMojo
     /**
      * Reuse Xvfb process
      * 
-     * @parameter expression="${reuse}" default-value="false"
+     * @parameter expression="${xvfb.reuse}" default-value="false"
+     * @since 1.1
      */
     boolean reuse
 
