@@ -1,8 +1,10 @@
- ------
+ ---
  Headless X11 with Xvfb
- ------
- ------
- $Id$
+ ---
+ Olivier Lamy
+ <olamy@apache.org>
+ ---
+ 2010-10-13
 
 ~~ 
 ~~ Licensed to the Apache Software Foundation (ASF) under one
@@ -38,6 +40,7 @@ Headless X11 with Xvfb
     <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>selenium-maven-plugin</artifactId>
+        <version>${project.version}</version>
         <executions>
             <execution>
                 <id>xvfb</id>
@@ -76,6 +79,7 @@ chmod u+s `which Xvfb`
     <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>selenium-maven-plugin</artifactId>
+        <version>${project.version}</version>
         <executions>
             <execution>
                 <id>xvfb</id>
