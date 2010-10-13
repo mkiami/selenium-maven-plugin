@@ -39,24 +39,24 @@ Selenium Maven Plugin
 
 * Goals Overview
 
- * {{{start-server-mojo.html}selenium:start-server}}: Start the Selenium server.
+ * {{{./start-server-mojo.html}selenium:start-server}}: Start the Selenium server.
  
- * {{{stop-server-mojo.html}selenium:stop-server}}: Stop the Selenium server.
+ * {{{./stop-server-mojo.html}selenium:stop-server}}: Stop the Selenium server.
  
- * {{{selenese-mojo.html}selenium:selenese}}: Run a suite of HTML Selenese tests.
+ * {{{./selenese-mojo.html}selenium:selenese}}: Run a suite of HTML Selenese tests.
  
- * {{{xvfb-mojo.html}selenium:xvfb}}: Starts an Xvfb instance suitable for handling X11 displays for headless systems.
+ * {{{./xvfb-mojo.html}selenium:xvfb}}: Starts an Xvfb instance suitable for handling X11 displays for headless systems.
  
  []
 
 * Usage
 
- Instructions on how to use the Selenium Maven Plugin can be found on the {{{usage.html}usage page}}.
+ Instructions on how to use the Selenium Maven Plugin can be found on the {{{./usage.html}usage page}}.
 
 * Examples
 
- * {{{examples/using-with-surefire.html}An example with Surefire.}}
+ * {{{./examples/using-with-surefire.html}An example with Surefire.}}
  
- * {{{examples/headless-with-xvfb.html}Headless X11 with Xvfb.}}
+ * {{{./examples/headless-with-xvfb.html}Headless X11 with Xvfb.}}
  
  []
