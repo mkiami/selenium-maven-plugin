@@ -18,8 +18,7 @@
 
 <!-- $Id$ -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -31,15 +30,15 @@
 
   <artifactId>selenium-maven-plugin</artifactId>
   <name>Maven Selenium Plugin</name>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.1</version>
   <packaging>maven-plugin</packaging>
 
   <url>http://mojo.codehaus.org/selenium-maven-plugin</url>
 
   <scm>
-    <connection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/selenium-maven-plugin</connection>
-    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/trunk/mojo/selenium-maven-plugin</developerConnection>
-    <url>http://fisheye.codehaus.org/browse/mojo/trunk/mojo/selenium-maven-plugin</url>
+    <connection>scm:svn:https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.1</connection>
+    <developerConnection>scm:svn:https://svn.codehaus.org/mojo/tags/selenium-maven-plugin-1.1</developerConnection>
+    <url>http://fisheye.codehaus.org/browse/mojo/tags/selenium-maven-plugin-1.1</url>
   </scm>
 
   <prerequisites>
