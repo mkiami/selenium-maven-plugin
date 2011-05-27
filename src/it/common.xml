@@ -20,12 +20,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>org.codehaus.mojo.selenium.it</groupId>
     <artifactId>common</artifactId>
     <version>testing</version>
     <packaging>pom</packaging>
-    
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -33,41 +33,88 @@
                 <artifactId>junit</artifactId>
                 <version>3.8.2</version>
             </dependency>
-            
+
             <dependency>
                <groupId>org.codehaus.groovy</groupId>
                <artifactId>groovy-all</artifactId>
                <version>${groovy.version}</version>
             </dependency>
-            
+
             <dependency>
-                <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-                <artifactId>selenium-java-client-driver</artifactId>
-                <version>${selenium-client.version}</version>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium</artifactId>
+                <version>${selenium-server.version}</version>
+                <type>pom</type>
             </dependency>
+
+            <!--<dependency>-->
+                <!--<groupId>org.seleniumhq.selenium</groupId>-->
+                <!--<artifactId>selenium-server</artifactId>-->
+                <!--<version>${selenium-server.version}</version>-->
+            <!--</dependency>-->
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.1.1</version>
+            </dependency>
+
+            <!--<dependency>-->
+                <!--<groupId>org.seleniumhq.selenium</groupId>-->
+                <!--<artifactId>selenium-remote-driver</artifactId>-->
+                <!--<version>${selenium-server.version}</version>-->
+            <!--</dependency>-->
         </dependencies>
+
     </dependencyManagement>
-    
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
-            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
-            <artifactId>selenium-java-client-driver</artifactId>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium</artifactId>
             <scope>test</scope>
+            <type>pom</type>
+            <exclusions>
+                <!-- prevent ant:ant versus org.apache.ant:ant collision -->
+                <exclusion>
+                    <groupId>ant</groupId>
+                    <artifactId>ant</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-        
+
+        <!--<dependency>-->
+             <!--<groupId>org.seleniumhq.selenium</groupId>-->
+             <!--<artifactId>selenium-remote-driver</artifactId>-->
+            <!--<scope>test</scope>-->
+         <!--</dependency>-->
+
+
+        <!--<dependency>-->
+             <!--<groupId>org.seleniumhq.selenium</groupId>-->
+             <!--<artifactId>selenium-server</artifactId>-->
+            <!--<scope>test</scope>-->
+         <!--</dependency>-->
+
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+       </dependency>
+
     </dependencies>
-    
+
     <build>
         <pluginManagement>
             <plugins>
@@ -86,19 +133,19 @@
                         </execution>
                     </executions>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-plugin-plugin</artifactId>
                     <version>2.4.1</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>2.0.2</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -126,7 +173,7 @@
                     <artifactId>maven-install-plugin</artifactId>
                     <version>2.2</version>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
@@ -135,7 +182,7 @@
                         <source>1.4</source>
                     </configuration>
                 </plugin>
-                
+
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>selenium-maven-plugin</artifactId>

@@ -298,7 +298,14 @@ class StartServerMojo
                     // Add our plugin artifact to pick up log4j configuration
                     pathelement(location: getClass().protectionDomain.codeSource.location.file)
                     pathelement(location: pluginArifact('log4j:log4j'))
-                    pathelement(location: pluginArifact('org.seleniumhq.selenium.server:selenium-server'))
+                    pathelement(location: pluginArifact('commons-logging:commons-logging'))
+                    pathelement(location: pluginArifact('ant:ant'))
+                    pathelement(location: pluginArifact('org.mortbay.jetty:servlet-api-2.5'))
+//                    pathelement(location: pluginArifact('org.seleniumhq.selenium:selenium-common'))
+                    pathelement(location: pluginArifact('org.seleniumhq.selenium:selenium-server'))
+                    pathelement(location: pluginArifact('org.seleniumhq.selenium:selenium-remote-driver'))
+                    pathelement(location: pluginArifact('org.seleniumhq.selenium:selenium-api'))
+                    pathelement(location: pluginArifact('com.google.guava:guava'))
                 }
                 
                 // Set display properties if the properties file exists
