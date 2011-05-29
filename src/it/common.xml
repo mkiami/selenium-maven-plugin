@@ -47,23 +47,11 @@
                 <type>pom</type>
             </dependency>
 
-            <!--<dependency>-->
-                <!--<groupId>org.seleniumhq.selenium</groupId>-->
-                <!--<artifactId>selenium-server</artifactId>-->
-                <!--<version>${selenium-server.version}</version>-->
-            <!--</dependency>-->
-
             <dependency>
                 <groupId>commons-logging</groupId>
                 <artifactId>commons-logging</artifactId>
                 <version>1.1.1</version>
             </dependency>
-
-            <!--<dependency>-->
-                <!--<groupId>org.seleniumhq.selenium</groupId>-->
-                <!--<artifactId>selenium-remote-driver</artifactId>-->
-                <!--<version>${selenium-server.version}</version>-->
-            <!--</dependency>-->
         </dependencies>
 
     </dependencyManagement>
@@ -80,27 +68,7 @@
             <artifactId>selenium</artifactId>
             <scope>test</scope>
             <type>pom</type>
-            <exclusions>
-                <!-- prevent ant:ant versus org.apache.ant:ant collision -->
-                <exclusion>
-                    <groupId>ant</groupId>
-                    <artifactId>ant</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
-
-        <!--<dependency>-->
-             <!--<groupId>org.seleniumhq.selenium</groupId>-->
-             <!--<artifactId>selenium-remote-driver</artifactId>-->
-            <!--<scope>test</scope>-->
-         <!--</dependency>-->
-
-
-        <!--<dependency>-->
-             <!--<groupId>org.seleniumhq.selenium</groupId>-->
-             <!--<artifactId>selenium-server</artifactId>-->
-            <!--<scope>test</scope>-->
-         <!--</dependency>-->
 
         <dependency>
             <groupId>org.codehaus.groovy</groupId>

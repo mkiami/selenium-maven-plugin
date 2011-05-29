@@ -136,27 +136,6 @@
           <artifactId>selenium</artifactId>
           <version>${selenium-server.version}</version>
           <type>pom</type>
-          <exclusions>
-              <!-- prevent ant:ant versus org.apache.ant:ant collision -->
-              <exclusion>
-                  <groupId>ant</groupId>
-                  <artifactId>ant</artifactId>
-              </exclusion>
-          </exclusions>
-      </dependency>
-
-      
-      <dependency>
-          <groupId>org.seleniumhq.selenium</groupId>
-          <artifactId>selenium-server</artifactId>
-          <version>${selenium-server.version}</version>
-          <exclusions>
-              <!-- prevent ant:ant versus org.apache.ant:ant collision -->
-              <exclusion>
-                  <groupId>ant</groupId>
-                  <artifactId>ant</artifactId>
-              </exclusion>
-          </exclusions>
       </dependency>
 
       <dependency>
@@ -164,13 +143,6 @@
           <artifactId>selenium-remote-driver</artifactId>
           <version>${selenium-server.version}</version>
       </dependency>
-
-      <dependency>
-          <groupId>ant</groupId>
-          <artifactId>ant</artifactId>
-          <version>1.6.5</version>
-      </dependency>
-
 
       <dependency>
       <groupId>commons-lang</groupId>
